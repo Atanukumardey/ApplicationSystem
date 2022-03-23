@@ -1,0 +1,11 @@
+https://code-boxx.com/user-registration-email-php-mysql/
+
+https://code-boxx.com/send-email-php/
+
+https://blog.chapagain.com.np/php-easily-create-pdf-on-the-fly/
+
+https://stackoverflow.com/questions/1648715/which-one-is-the-best-pdf-api-for-php
+
+https://stackoverflow.com/questions/43778468/create-simple-text-editor-javascript
+
+https://github.com/Ho3ein83/texteditor

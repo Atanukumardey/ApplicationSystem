@@ -1,0 +1,323 @@
+@import "https://fonts.googleapis.com/css?family=Poppins:300,400,500,600,700";
+
+
+
+
+
+
+
+html, body {
+   /* margin:0;
+   padding:0; */
+   height:100%;
+   min-height: 100%
+}
+
+a, a:hover, a:focus {
+    color:initial;
+    text-decoration:none;
+    transition: all 0.3s;
+}
+
+a[data-toggle="collapse"] {
+    position: relative;
+}
+/* i, span {
+    display: inline-block;
+} */
+/* ul ul a {
+    font-size: 0.9em !important;
+    padding-left: 30px !important;
+    background: #293253;
+}
+
+ul.CTAs {
+    padding: 20px;
+}
+
+ul.CTAs a {
+    text-align: center;
+    font-size: 0.9em !important;
+    display: block;
+    border-radius: 5px;
+    margin-bottom: 5px;
+} */
+
+
+h3, .third{
+	font-family: "kalpurush";
+}
+h3 {
+	font-size: 26px;
+	margin: 10px 0;
+}
+.third p {
+	font-size: 13px;
+	line-height: 1.2;
+	font-weight: 700;
+}
+.c_container {
+	position: relative;
+	min-height: 100vh;
+	width: 100%;
+	padding-left: 3vw;
+	display: flex-end;
+	flex-direction: column;
+}
+
+.uppernavbar {
+	/* height: auto; */
+	max-width: 100vw;
+	width: 100vw;
+	padding-right: 1vw;
+	height: 16vh; 
+	display: flex;
+	flex-direction: row;
+	justify-content: space-between;
+}
+.page-logo{
+	padding-top: 20px;
+	display: flex;
+	align-items: center;
+}
+.logo {
+	padding-left: 10px;
+	padding-top: 20px;
+	width: 100px;
+	height: 120px;
+}
+.main-title{
+	margin-left: -20px;
+}
+.menu {
+	/* padding-top: 20px; */
+	padding-right: 5px;
+	/* width: 25vw; */
+	width: auto;
+	display: flex;
+	flex-direction: row;
+	padding-block: 2px;
+	align-items: center;
+	justify-content: space-between;
+}
+.user {
+	margin: 10px;
+	display: flex;
+	flex-direction: column;
+	cursor: pointer;
+}
+.helplogout{
+	margin: 10px;
+	padding-top: 20px;
+	display: flex;
+	flex-direction: column;
+	justify-content: center;
+	align-items: center;
+	cursor: pointer;
+}
+.aa {
+	width: 40px;
+}
+
+.applicationforms {
+	max-width: 100%;
+	display: flex;
+	padding-bottom: 25px; 
+	padding-top: 15px;
+	padding-inline-start: 30px;
+	padding-inline-end: 30px;
+	justify-content: space-evenly;
+	flex-direction:row;
+	flex-wrap: wrap;
+/*	background-color: cyan;*/
+}
+
+.applicationformsupdate {
+	width: 100%;
+	height: 100%;
+	display: flex;
+	padding-block: 20px;
+	padding-inline-start: 30px;
+	justify-content: space-evenly;
+	flex-direction:column;
+	flex-wrap: wrap;
+}
+
+
+.third {
+	padding-left: 20px;
+	/*background-color: red;*/
+}
+.departments {
+	display: flex;
+	flex-direction: row;
+	flex-wrap: wrap;
+	justify-content: center;
+	/*justify-content: center;*/
+
+}
+.department {
+	display: flex;
+	flex-direction: row;
+	width: 230px;
+	margin-right: 10px;
+}
+.img {
+	width: 80px;
+	height: 80px;
+	border-radius: 5px;
+	background-color: none;
+	margin-bottom: 10px;
+	object-fit: contain;
+	padding: 5px;
+}
+.box {
+	width: 150px;
+	height: 80px;
+	padding: 2px 8px;
+}
+.dept-icon {
+	width: 70px;
+}
+.forth {
+	padding-left: 20px;
+	/*background-color: steelblue;*/
+}
+.table-box {
+	width: 80%;
+	height: auto;
+	background-color: #f1f1f1;
+	margin-bottom: 10px;
+	border: 2px solid black;
+}
+
+.applicationcard{
+    width: 11rem;
+	height: 11rem;
+    box-shadow: 5px 5px 5px grey;
+    border-radius: 25px;
+    transition:all .5s ease-in-out;
+}
+.applicationcard:hover{
+      width: 12rem;
+	  height:12rem;
+}
+
+.applicationupdatecard{
+    width: 75vw;/*85rem;*/
+	height: 5rem;
+    box-shadow: 3px 3px 3px grey;
+	padding-right: 5px;
+    border-radius: 15px;
+    transition:all .5s ease-in-out;
+}
+.applicationupdatecard:hover{
+      width: 77vw;
+	  height:5.3rem;
+}
+
+.deptassignopt:checked+label:after{
+	background-color: chartreuse;
+	color: chartreuse;
+}
+
+#div_color_snippet {
+    display:inline;      
+}
+#ul_color_snippet li{
+    display: inline;
+}
+
+@media screen and (max-width: 500px) {
+  /* .logo {
+	height: 120px;
+	width: 90px;
+} */
+  .applicationforms{
+	  max-width: 100%;
+	  /* flex-direction: column; */
+	  justify-content: space-between;
+  }
+  .applicationformsupdate{
+	  width: 100%;
+	  padding-inline-start: 10px;
+  }
+    .applicationupdatecard:hover{
+	  height: 6.2rem;
+      width: 99%;
+}
+
+  .applicationupdatecard{
+	  width: 100%;
+	  height: 6rem;
+  }
+  #uni-logo {
+  	width: 80px;
+  }
+  .department {
+  	width: 165px;
+  }
+  .img {
+  	width: 60px;
+  	height: 60px;
+  }
+  .dept-icon {
+  	width: 50px;
+  }
+  .box {
+  	height: 60px;
+  	padding: 2px 2px 2px 5px;
+  	font-size: 10px;
+  }
+  .user, .help, .logout {
+  	font-size: 14px;
+  }
+  .aa {
+  	width: 30px;
+  }
+}
+@media screen and (max-width: 600px){
+
+	.applicationforms{
+	  max-width: 100%;
+	  /* flex-direction: column; */
+	  justify-content: space-between;
+  }
+    .applicationupdatecard:hover{
+      width: 95%;
+	  height: 6.2rem;
+}
+.applicationformsupdate{
+	
+	  padding-block: 10px;
+	  padding-inline-start: 10px;
+}
+
+  .applicationupdatecard{
+	  height: 6rem;
+	  width: 90%;
+  }
+	.page-logo{
+		flex-direction: column;
+		justify-content: center;
+		align-items: center;
+	}
+	.main-title{
+		margin-left: 0;
+	}
+}
+@media screen and (max-width: 900px){
+
+		  .applicationforms{
+	  max-width: 100%;
+  }
+      .applicationupdatecard:hover{
+		  width: 90%;
+		  height: 6.2rem;
+}
+
+  .applicationupdatecard{
+	  width: 85%;
+	  height: 6.2rem;
+  }
+}

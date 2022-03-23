@@ -1,0 +1,74 @@
+@import "https://fonts.googleapis.com/css?family=Poppins:300,400,500,600,700";
+
+body{
+  background-color: #f5f8fe;
+}
+.wrapper {
+    display: flex;
+    align-items: stretch;
+}
+.card {
+    box-shadow: 0 0 10px #ccc;
+    background-color: #fff;
+    color: #293253;
+    padding: 10px 10px;
+  }
+
+  #content {
+    padding: 0px;
+    min-height: 89.7vh;
+    height: auto;
+    transition: all 0.3s;
+    width: 100%;
+  }
+  a, a:hover, a:focus {
+    color:rgb(5, 184, 255);
+    text-decoration:none;
+    transition: all 0.3s;
+}
+
+  .pagecontent{
+  color:black;
+  transition: all 0.3s;
+  padding: 30px;
+}
+
+  .pagechangebtn {
+    border: none;
+    background-color: #fff;
+    padding: 14px 6px;
+    font-size: 16px;
+    color: blue;
+    text-align: center;
+    text-decoration: underline;
+    cursor: pointer;
+    display: inline-block;
+  }
+
+  .pagechangebtn:hover {
+    background: none;
+  }
+
+  .pagechangebtn::after {
+    border: none;
+    background: none;
+  }
+
+  @media (max-width: 768px) {
+    .pagecontent{
+    margin-left: 0px;
+    padding: 10px;
+    }
+    .pagecontentactive{
+      margin-left:82px;
+    }
+    a[aria-expanded="false"]::before, a[aria-expanded="true"]::before {
+        top: auto;
+        bottom: 5px;
+        right: 50%;
+        -webkit-transform: translateX(50%);
+        -ms-transform: translateX(50%);
+        transform: translateX(50%);
+    }
+
+}

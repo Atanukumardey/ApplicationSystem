@@ -1,0 +1,129 @@
+
+
+* {
+	box-sizing: border-box;
+}
+input[type=text],
+input[type=number],
+input[type=mail],
+select,
+textarea {
+	width: 100%;
+	padding: 12px;
+	border: 1px solid #ccc;
+	border-radius: 4px;
+	resize: vertical;
+	box-sizing: border-box;
+	margin-top: 6px;
+	margin-bottom: 16px;
+	border-radius: 10px 10px 10px 10px;
+}
+label {
+	padding: 12px 12px 12px 0;
+	display: inline-block;
+}
+#submit {
+	width: 90px;
+	background: none repeat scroll 0 0 black;
+	border-radius: 10px 10px 10px 10px;
+	border-style: solid;
+	border-width: 1px;
+	box-shadow: 1px 1px 3px #333333;
+	height: 33px;
+	cursor: pointer;
+	text-align: center;
+	/* display: block; */
+	color: white;
+	text-transform: uppercase;
+	font-weight: 600;
+	margin: 10px 0;
+	transition: 0.5s;
+}
+#submit:hover {
+	background-color: white;
+	color: black;
+}
+/* #reset {
+	float: right;
+	clear: both;
+} */
+#reset {
+	width: 90px;
+	background: none repeat scroll 0 0 white;
+	border-radius: 10px 10px 10px 10px;
+	border-style: solid;
+	border-width: 1px;
+	box-shadow: 1px 1px 3px #333333;
+	height: 33px;
+	cursor: pointer;
+	text-align: center;
+	/* display: block; */
+	color: black;
+	text-transform: uppercase;
+	font-weight: 600;
+	margin: 10px 0;
+	transition: 0.5s;
+}
+#reset:hover,
+#reset:focus {
+	background-color: black;
+	color: white;
+}
+#reset:active {
+	background-color: black;
+	color: white;
+	outline: 10px 10px 10px 10px;
+}
+input[type=radio] {
+	border-radius: 80%;
+	width: 16px;
+	height: 16px;
+	border: 2px solid #999;
+	transition: 0.2s all linear;
+	margin-right: 5px;
+	position: relative;
+	top: 4px;
+}
+.container {
+	border-radius: 10px 10px 10px 10px;
+	background-image: linear-gradient(to bottom, #ced0d4b7, #dfdfdf, #ffffff);
+	padding: 20px;
+}
+.col-25 {
+	float: left;
+	width: 18%;
+	margin-top: 6px;
+}
+.col-75 {
+	float: left;
+	width: 82%;
+	margin-top: 6px;
+}
+.row:after {
+	content: "";
+	display: table;
+	clear: both;
+}
+legend {
+	background-color: #333333;
+	background-image: linear-gradient(to bottom, green, rgb(15, 148, 44), rgb(24, 195, 61));
+	color: white;
+	box-shadow: 1px 1px 3px #333333;
+	padding: 5px 10px;
+}
+fieldset {
+	border-radius: 10px 10px 10px 10px;
+	background-image: linear-gradient(to bottom, #f6f6f6, #ffffff, #fffdfd);
+	box-shadow: 1px 1px 3px #333333;
+}
+/* Responsive layout - when the screen is less than 600px wide, make the two columns stack on top of each other instead of next to each other */
+@media screen and (max-width: 600px) {
+	.col-25,
+	.col-75,
+	#submit {
+		margin-top: 0;
+	}
+	#reset{
+		margin-top: 0;
+	}
+}

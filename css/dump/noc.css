@@ -1,0 +1,51 @@
+#noc-section{
+  /* margin-top: 150px; */
+  padding: 1%;
+  position: relative;
+  /* line-height: calc(100vh - 150px); */
+  /*height: calc(100vh - 0px);*/
+  height: 75vh;
+}
+
+#noc_search_box{
+  padding-top:0%;
+
+}
+#noc_display{
+box-shadow: 0 0 10px #ccc;
+}
+/*
+@media (max-width:740px){
+#noc-section{
+  margin-top:80px;
+  margin-left: 1%;
+  margin-right: 1%;
+  padding: 1%;
+
+}
+}
+*/
+#attachment{
+  text-align:center;
+}
+
+#publish_date{
+  text-align:right;
+}
+@media (max-width:570px){
+  #attachment{
+    text-align:left;
+  }
+  #publish_date{
+    text-align:left;
+  }
+}
+.form-control{
+  border-radius:0rem;
+}
+.btn{
+    border-radius:0rem;
+}
+.card{
+border-radius:0rem;
+}

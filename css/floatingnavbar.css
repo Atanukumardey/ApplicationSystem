@@ -1,0 +1,113 @@
+@import url('http://fonts.googleapis.com/css?family=Raleway:100,200,300,400');
+@import url('https://cdnjs.cloudflare.com/ajax/libs/normalize/3.0.1/normalize.min.css');
+@import url('http://code.ionicframework.com/ionicons/2.0.1/css/ionicons.min.css');
+@import url('mfb.css');
+@import 'mfb.css';
+
+html, body{
+  -webkit-font-smoothing: initial;
+  text-rendering: initial;  
+}
+html{
+  -ms-touch-action: manipulation;
+  touch-action: manipulation;
+}
+[data-mfb-label]:after{
+  background: whitesmoke;
+  color: black;
+}
+.actions{
+  font-weight: 300;
+  text-transform: uppercase;
+  font-size: 0.8em;
+  padding: 1em;
+  border: none;
+  background: none;
+  transition: color .2s;
+  cursor: pointer;
+}
+.actions:hover{
+  color: rgb(30, 30, 171);
+  background: #F5F5F5;
+  box-shadow: 0px 2px 5px 0 rgba(0, 0, 0, 0.26);
+}
+
+.striked{
+ text-decoration: line-through;
+ /* text-decoration: inherit; */
+}
+#menubar{
+  /* position: absolute; */
+  z-index: 100000;
+}
+#menubar a{
+  background-color: #293253;
+}
+.mfb-component--tl{
+  animation: fromTop 1s 1;
+  -webkit-animation: fromTop 1s 1;
+}
+.mfb-component--tr{
+  animation: fromTop 1.3s 1;
+  -webkit-animation: fromTop 1.3s 1;
+}
+.mfb-component--br{
+  animation: fromBottom 1.6s 1;
+  -webkit-animation: fromBottom 1.6s 1;
+}
+.mfb-component--bl{
+  animation: fromBottom 1.9s 1;
+  -webkit-animation: fromBottom 1.9s 1;
+}
+@keyframes fromBottom {
+  0% {
+    transform: translateY(250px);
+  }
+  100% {
+    transform: translateY(0);
+  }
+}
+@keyframes fromTop {
+  0% {
+    transform: translateY(-250px);
+  }
+  100% {
+    transform: translateY(0);
+  }
+}
+@-webkit-keyframes fromBottom {
+  0% {
+    transform: translateY(250px);
+  }
+  100% {
+    transform: translateY(0);
+  }
+}
+@-webkit-keyframes fromTop {
+  0% {
+    transform: translateY(-250px);
+  }
+  100% {
+    transform: translateY(0);
+  }
+}
+
+@-webkit-keyframes fadeIn {
+  0% {
+    opacity: 0;
+  }
+
+  100% {
+    opacity: 1;
+  }
+}
+
+@keyframes fadeIn {
+  0% {
+    opacity: 0;
+  }
+
+  100% {
+    opacity: 1;
+  }
+}
