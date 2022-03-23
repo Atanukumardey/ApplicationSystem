@@ -144,7 +144,6 @@ function getStudyLeaveApplicationByApplicationID($ApplicationID, &$conn)
         return mysqli_fetch_assoc($result);
     }
     return null;
-
 }
 
 function getStudyLeaveApplicationByProgressState($ProgressState, &$conn)
@@ -158,8 +157,15 @@ function getStudyLeaveApplicationByProgressState($ProgressState, &$conn)
                 ";
     $result = mysqli_query($conn, $sql);  // conn dabase connection reference. see in "database_connect.php" file.
 
-    if (!empty($result) && mysqli_num_rows($result) == 1) {
-        return mysqli_fetch_assoc($result);
+    $returnArray = array();
+
+    if (!empty($result) && mysqli_num_rows($result) >= 1) {
+        while ($row = mysqli_fetch_assoc($result)) {
+            array_push($returnArray, $row);
+        }
+        mysqli_free_result($result);
+        return $returnArray;
     }
+
     return null;
 }

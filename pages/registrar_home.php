@@ -1,6 +1,7 @@
 <?php
 include "../php/db/database_connect.php";
 include "../php/db/accessUtility/nocApplication.php";
+include "../php/db/accessUtility/studyleaveapplication.php";
 include "../php/session/session.php";
 include "../php/util/pageutil.php";
 include "../php/util/backendutil.php";
@@ -17,19 +18,20 @@ $progressStateType = array(
     'NotAssigned' => 6,
     'ChairToReg' => 7,
     'RegToHigherStd' => 8,
-    'HigherStdtoDept' => 9,
+    'HigherStdToDept' => 9,
     'HigherStdToReg' => 10,
     'RegToVC' => 11,
-    'VCtoReg' => 12,
-    'RegtoApplicant' => 13
+    'VCToReg' => 12,
+    'RegToApplicant' => 13
 );
 
 if (!isset($_SESSION['Email']) || !isset($_SESSION['RoleID'])) {
     header('Location: ../index.php');
 }
-if ($_SESSION['Role'] != 'Registrar') {
-    header('Location: ../index.php');
-} else {
+// if ($_SESSION['Role'] != 'Registrar') {
+//     header('Location: ../index.php');
+// }
+ else {
 ?>
     <!DOCTYPE html>
     <html>
@@ -98,6 +100,8 @@ if ($_SESSION['Role'] != 'Registrar') {
             if (isset($_GET['application'])) {
                 if ($_GET['application'] == 'nocpassport') {
                     createNOCsection($conn);
+                }else if($_GET['application'] == 'studyleave'){
+                    createStudyLeavesection($conn);
                 }
                 unset($_GET['application']);
             } else {
@@ -123,6 +127,7 @@ function createApplicationSection($Application, $applicationdata)
         if ($applicationdata != null) {
             foreach ($applicationdata as $row) {
                 $row['ApplicationName'] = $Application['Name'];
+                //$row['ApplicationName'] = "Study Leave";
                 //return;
                 createApplicationUpdateTile($row, $Application);
             }
@@ -144,7 +149,7 @@ function createApplicationUpdateTile($Applicationdata, $Application)
             <h4 class="card-text" style="width: max-content;"><?= $Applicationdata['ApplicationName'] ?></h4>
             <p style="width: max-content;"> Application Date: <?= $Applicationdata['ApplicationDate']; ?> </p>
             <div>
-                <form action="<?=$Application['location']?>" method="get" class="col" style="height: inherit;">
+                <form action="<?= $Application['location'] ?>" method="get" class="col" style="height: inherit;">
                     <button type="submit" name=<?= json_encode($Application['IDName']) ?> value="<?= $Applicationdata[$Application['IDName']]; ?>" class=" btn-primary btn-sm" style="padding-right: 20px; width:inherit; height:auto;" method="get" ">Details</button>
                     <input type = 'hidden' name='ApplicantID' value=" <?= $Applicationdata['UserIDref']; ?>">
                 </form>
@@ -166,10 +171,10 @@ function createNOCsection(&$conn)
     $Application['IDName'] = "NocID";
     $Application['icon'] = "fa fa-passport fa-3x";
     $Application['location'] = "application_check_office.php";
-    $applicationData = getnocApplicationsByProgreState($conn, 'NotAssigned');
+    $applicationData = getnocApplicationsByProgressState($conn, 'NotAssigned');
     createApplicationSection($Application, $applicationData);
     $Application['status'] = "InProgress Applications";
-    $applicationData = getnocApplicationsByProgreState($conn, 'InProgress');
+    $applicationData = getnocApplicationsByProgressState($conn, 'InProgress');
     createApplicationSection($Application, $applicationData);
 }
 
@@ -186,24 +191,54 @@ function createStudyLeavesection(&$conn)
     $Application['icon'] = "fa fa-graduation-cap fa-3x";
     $Application['location'] = "officeCheckStudyLeave.php";
     $progressState = array();
+    $stateStatus = array();
     /**
      * Registrar has three state for this application
      */
     if ($_SESSION['Role'] == 'Registrar') {
-        $progressState[0] = $progressStateType['ChairtoReg'];
+
+        $progressState[0] = $progressStateType['ChairToReg'];
+        $stateStatus[0] = "From Department Chairman";
+
         $progressState[1] = $progressStateType['HigherStdToReg'];
-        $progressState[2] = $progressStateType['VCtoReg'];
+        $stateStatus[1] = "From Higher Study Department";
+
+        $progressState[2] = $progressStateType['VCToReg'];
+        $stateStatus[2] = "From Vice Chancellor";
+
+        for ($i = 0; $i < 3; $i++) {
+            $applicationData = getStudyLeaveApplicationByProgressState($progressState[$i], $conn);
+            if ($applicationData != null) {
+                $Application['status'] = $stateStatus[$i];
+                createApplicationSection($Application, $applicationData);
+            }
+        }
     } else if ($_SESSION['Role'] == 'DepartmentChairman') { // first one to get a new application
-        $progressState[0] = $progressStateType['NotAssigned'];
+        $progressState = $progressStateType['NotAssigned'];
+        $applicationData = getStudyLeaveApplicationByProgressState($progressState, $conn);
+        if ($applicationData != null) {
+            $Application['status'] = "New Applications";
+            createApplicationSection($Application, $applicationData);
+        }
     } else if ($_SESSION['Role'] == 'ViceChancellor') {
-        $progressState[0] = $progressStateType['RegtoVC'];
+        $progressState = $progressStateType['RegToVC'];
+        $applicationData = getStudyLeaveApplicationByProgressState($progressState, $conn);
+        if ($applicationData != null) {
+            $Application['status'] = "New Applications";
+            createApplicationSection($Application, $applicationData);
+        }
     } else if ($_SESSION['Role'] == "Deputy Registrar (Higher Study Branch) Registrar's Office") {
-        $progressState[0] = $progressStateType['RegtoHigherStd'];
+        $progressState[0] = $progressStateType['RegToHigherStd'];
+        $stateStatus[0] = "From Registrar";
+        $progressState[1] = $progressStateType['Assigned']; // HSTD has assigned the application to other departments for approvaln
+        $stateStatus[1] = "Assigned To Departments";
+        for ($i = 0; $i < 2; $i++) {
+            $applicationData = getStudyLeaveApplicationByProgressState($progressState[$i], $conn);
+            if ($applicationData != null) {
+                $Application['status'] = $stateStatus[$i];
+                createApplicationSection($Application, $applicationData);
+            }
+        }
     }
-    $applicationData = getnocApplicationsByProgreState($conn, $progressState[0]);
-    createApplicationSection($Application, $applicationData);
-    $Application['status'] = "InProgress Applications";
-    $applicationData = getnocApplicationsByProgreState($conn, 'InProgress');
-    createApplicationSection($Application, $applicationData);
 }
 ?>

@@ -77,7 +77,7 @@ WHERE
 /**
  * @param string $progressState excludes results of that state
  */
-function getnocApplicationsByProgreState(&$conn, $progressState)
+function getnocApplicationsByProgressState(&$conn, $progressState)
 {
     $progressState = getprogressID($progressState);
     $sql = "SELECT
