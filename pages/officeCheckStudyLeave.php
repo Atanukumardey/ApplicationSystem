@@ -36,7 +36,7 @@ if (1 != 1) { //!isset($_SESSION['Email']) || !isset($_SESSION['RoleID']
         include("../html/pageNavbar.php");
         // will get user id and study leave id by get method
 
-        $applicationID = 6; // $_GET['studyLeaveID'];
+        $applicationID = 6; // $_GET['ApplicationID'];
         $applicationData =  getStudyLeaveApplicationByApplicationID($applicationID, $conn);
 
         $attachmentData = getAttachments($conn, $applicationData['ProcessIDref']);

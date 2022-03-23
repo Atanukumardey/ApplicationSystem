@@ -5,7 +5,7 @@ CREATE TABLE `StudyLeaveApplication`(
     `NameOfProgram` varchar(255),
     `University` varchar(255),
     `Department` varchar(255),
-    `FinincialSource` varchar(255),
+    `FinancialSource` varchar(255),
     `StartsFrom` date,
     `ProgramDuration` int(3), -- duration in year
     `LeaveStartDate` date,

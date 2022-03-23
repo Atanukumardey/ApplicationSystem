@@ -38,12 +38,6 @@ if (!isset($_SESSION['Email']) || !isset($_SESSION['RoleID'])) {
             unset($_SESSION['success']);
         }
         ?>
-        <div class="sidenav">
-            <a href="#about">About</a>
-            <a href="#services">Services</a>
-            <a href="#clients">Clients</a>
-            <a href="#contact">Contact</a>
-        </div>
         <div class="c_container">
             <?php
             if (!isset($_SESSION['logedIN'])) {

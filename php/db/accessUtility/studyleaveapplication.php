@@ -146,3 +146,20 @@ function getStudyLeaveApplicationByApplicationID($ApplicationID, &$conn)
     return null;
 
 }
+
+function getStudyLeaveApplicationByProgressState($ProgressState, &$conn)
+{
+    $sql = "SELECT
+                *
+            FROM
+                `studyleaveapplication`
+            WHERE
+                ProgressState = '$ProgressState';
+                ";
+    $result = mysqli_query($conn, $sql);  // conn dabase connection reference. see in "database_connect.php" file.
+
+    if (!empty($result) && mysqli_num_rows($result) == 1) {
+        return mysqli_fetch_assoc($result);
+    }
+    return null;
+}

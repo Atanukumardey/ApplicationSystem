@@ -17,7 +17,8 @@ $deptArray = array(
     'DRHigherStudyBranchRO'
 );
 
-$progressState = array(
+global $progressStateType;
+$progressStateType = array(
     'Assigned' => 1,
     'InProgress' => 2,
     'Problem' => 3,
