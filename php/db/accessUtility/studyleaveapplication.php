@@ -8,7 +8,7 @@ ini_set('display_errors', 1);
 `NameOfProgram`,
 `University`,
 `Department`,
-`FinincialSource`,
+`FinancialSource`,
 `StartsFrom`,
 `ProgramDuration`,
 `LeaveStartDate`,
@@ -23,7 +23,7 @@ function createNewStudyLeaveApplicaiton(&$conn, $inputData, $UserIDref)
             `NameOfProgram`,
             `University`,
             `Department`,
-            `FinincialSource`,
+            `FinancialSource`,
             `StartsFrom`,
             `ProgramDuration`,
             `UserIDref`,
@@ -41,7 +41,7 @@ function createNewStudyLeaveApplicaiton(&$conn, $inputData, $UserIDref)
             $inputData['NameOfProgram'],
             $inputData['University'],
             $inputData['Department'],
-            $inputData['FinincialSource'],
+            $inputData['FinancialSource'],
             $inputData['StartsFrom'],
             $inputData['ProgramDuration'],
             $UserIDref,
@@ -62,12 +62,6 @@ function createNewStudyLeaveApplicaiton(&$conn, $inputData, $UserIDref)
     return true;
 }
 
-
-/**
-    `` = '[value-9]',
-    `UserIDref` = '[value-10]',
-WHERE
- */
 
 function updateStudyLeaveApplicationByApplicationID($ApplicationID, $inputData, &$conn)
 {
@@ -90,9 +84,9 @@ function updateStudyLeaveApplicationByApplicationID($ApplicationID, $inputData, 
         $Department = $inputData['Department'];
         $sql = $sql . " Department = '$Department',";
     }
-    if (isset($inputData['FinincialSource'])) {
-        $FinincialSource = $inputData['FinincialSource'];
-        $sql = $sql . " FinincialSource = '$FinincialSource',";
+    if (isset($inputData['FinancialSource'])) {
+        $FinancialSource = $inputData['FinancialSource'];
+        $sql = $sql . " FinancialSource = '$FinancialSource',";
     }
     if (isset($inputData['StartsFrom'])) {
         $StartsFrom = $inputData['StartsFrom'];

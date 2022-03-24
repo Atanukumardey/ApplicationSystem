@@ -12,12 +12,17 @@ include "file_upload.php";
 
 
 if (!isset($_SESSION['Email']) || !isset($_SESSION['RoleID']) || $_SESSION['Role'] == 'Applicant') {
-    header('Location: ../index.php');
+    header('Location: ../userManagement/logout.php');
 }
 
+global $ApplicationID;
 $ApplicationID = $_POST['ApplicationID'];
+
 global $Comment;
-$Comment = $_POST['comments'];
+$Comment = $_POST['comments'] . "";
+if (strlen($Comment) < 1) {
+    $Comment = "";
+}
 
 global $ApplicationData;
 $ApplicationData = getStudyLeaveApplicationByApplicationID($ApplicationID, $conn);
@@ -25,9 +30,9 @@ $ApplicationData = getStudyLeaveApplicationByApplicationID($ApplicationID, $conn
 global $processIDref;
 $processIDref = $ApplicationData['ProcessIDref'];
 
-echo $ApplicationID . "<br>";
-echo $Comment . "<br>";
-echo $processIDref;
+// echo $ApplicationID . "<br>";
+// echo $Comment . "<br>";
+// echo $processIDref;
 
 // check if the same person has any previous comments
 
@@ -49,12 +54,17 @@ function handleComments(&$conn)
     return true;
 }
 
-function uploadFiles(&$conn)
+function uploadFiles(&$conn, $processIDref)
 {
-    global $processIDref;
+    if (empty($_FILES)) {
+        return true;
+    }
+    if (!file_exists($_FILES['myfile']['tmp_name']) || !is_uploaded_file($_FILES['myfile']['tmp_name'])) {
+        return true;
+    }
     $uploadDir = "../SiteData/Uploads/";
     foreach ($_FILES['FileUpload']['name'] as $key => $name) {
-        if ($_FILES['ufile']['error'] != UPLOAD_ERR_OK) {
+        if ($_FILES['FileUpload']['error'] != UPLOAD_ERR_OK) {
             // process upload
             $_SESSION['error'] = "HTML FILE upload error in officeOperationOnStudyLeave php code";
             return false;
@@ -77,30 +87,19 @@ function uploadFiles(&$conn)
     }
 }
 
-global $progressStateType;
-$progressStateType = array(
-    'Assigned' => 1,
-    'InProgress' => 2,
-    'Problem' => 3,
-    'Approved' => 4,
-    'Rejected' => 5,
-    'NotAssigned' => 6,
-    'ChairToReg' => 7,
-    'RegToHigherStd' => 8,
-    'HigherStdToDept' => 9,
-    'HigherStdToReg' => 10,
-    'RegToVC' => 11,
-    'VCToReg' => 12,
-    'RegToHigherStd2' => 13
-);
 
-function OfficeOperationOnStudyLeave_MainTask(&$conn)
+function handleHigherStudyBranchCase(&$conn)
 {
     global $progressStateType;
     global $ApplicationData;
-    if ($_SESSION['Role'] == 'DRHigherStudyBranchRO') {
-    }
 
+    handleComments($conn);
+}
+
+function handleRegDeptVC(&$conn)
+{
+    global $progressStateType;
+    global $ApplicationData;
     $statetrack = null;
 
     if ($_SESSION['Role'] == 'DepartmentChairman') {   // if it is from dept chairman send it to registrar
@@ -118,14 +117,28 @@ function OfficeOperationOnStudyLeave_MainTask(&$conn)
         }
     }
 
-    if($statetrack==null){
+    if ($statetrack == null) {
         return false;
     }
-    
 
-
-    // if(||'||) {
-    //     handleComments($conn);
-    //     uploadFiles($conn);
-    // }
+    global $ApplicationID;
+    $inputData['ProgressState'] = $statetrack;
+    if (!handleComments($conn)) {
+        return false;
+    }
+    if (uploadFiles($conn, $ApplicationData['$processIDref'])) {
+        return false;
+    }
+    if (!updateStudyLeaveApplicationByApplicationID($ApplicationID, $inputData, $conn)) {
+        return false;
+    }
+    return true;
+}
+function OfficeOperationOnStudyLeave_MainTask(&$conn)
+{
+    global $progressStateType;
+    global $ApplicationData;
+    if ($_SESSION['Role'] == 'DRHigherStudyBranchRO') {
+    }
+    return handleRegDeptVC($conn);
 }

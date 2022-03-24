@@ -9,7 +9,7 @@ include "../php/db/accessUtility/Users.php";
 sessionStart(0, '/', 'localhost', true, true);
 
 if (!isset($_SESSION['Email']) || !isset($_SESSION['RoleID'])) {
-    header('Location: ../index.php');
+    header('Location: ../userManagement/logout.php');
 }
 $validAccesspersons = array("DepartmentChairman", "ViceChancellor", "Registrar", "DRHigherStudyBranchRO");
 
@@ -21,7 +21,7 @@ for($i=0; $i<4; $i++){
     }
 }
 if ($trueval = false) {
-    header('Location: ../index.php');
+    header('Location: ../userManagement/logout.php');
 } else {
 ?>
 

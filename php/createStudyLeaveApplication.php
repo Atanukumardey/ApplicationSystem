@@ -50,39 +50,54 @@ function createANewSLA($processIDref, &$conn)
     return createNewStudyLeaveApplicaiton($conn, $inputData, $_SESSION['UserID']);
 }
 
+function uploadFiles(&$conn, $processIDref)
+{
+    if (empty($_FILES)) {
+        return true;
+    }
+    if (!file_exists($_FILES['myfile']['tmp_name']) || !is_uploaded_file($_FILES['myfile']['tmp_name'])) {
+        return true;
+    }
+    $uploadDir = "../SiteData/Uploads/";
+    foreach ($_FILES['FileUpload']['name'] as $key => $name) {
+        $fileName = time() . basename($_FILES['FileUpload']["name"][$key]);
+        $fileSaveDir = $uploadDir . $fileName;
+        $fileSaveDir = str_replace(' ', '', $fileSaveDir);
+        if (upload_file("FileUpload", $key, $fileSaveDir)) {
+            $inputData['ProcessIDref'] = $processIDref;
+            $inputData['Directory'] = $fileName;
+            $inputData['Type'] = 'pdf';
+            if (!createAttachment($conn, $inputData)) {
+                $_SESSION['error'] = "Create Attachment Error in Create Study Leave Application php code";
+                return false;
+            }
+        } else {
+            $_SESSION['error'] = "File Upload Error in Create Study Leave Application php code";
+            return false;
+        }
+        return true;
+    }
+}
+
 function createANewSLAMainTask(&$conn)
 {
     if (createEmptyProcess($conn)) {
         //echo "<br>process created<br>";
         $processIDref = getlastProcessID($conn);
         if (createANewSLA($processIDref, $conn)) {
-            $uploadDir = "../SiteData/Uploads/";
-            foreach ($_FILES['FileUpload']['name'] as $key => $name) {
-                $fileName = time() . basename($_FILES['FileUpload']["name"][$key]);
-                $fileSaveDir = $uploadDir . $fileName;
-                $fileSaveDir = str_replace(' ', '', $fileSaveDir);
-                if (upload_file("FileUpload", $key, $fileSaveDir)) {
-                    $inputData['ProcessIDref'] = $processIDref;
-                    $inputData['Directory'] = $fileName;
-                    $inputData['Type'] = 'pdf';
-                    if (!createAttachment($conn, $inputData)) {
-                        $_SESSION['error'] = "Create Attachment Error in Create Study Leave Application php code";
-                        return false;
-                    }
-                } else {
-                    $_SESSION['error'] = "File Upload Error in Create Study Leave Application php code";
-                    return false;
-                }
-            }
-            return true;
-        } else {
-            $_SESSION['error'] = "createanewSLA Error in Create Study Leave Application php code";
+            return uploadFiles($conn, $processIDref);
         }
+        return true;
+    } else {
+        $_SESSION['error'] = "createanewSLA Error in Create Study Leave Application php code";
     }
     return false;
 }
 
-if(createANewSLAMainTask($conn)){
+
+if (createANewSLAMainTask($conn)) {
     $_SESSION['success'] = "Succcessfully Submitted";
     header('Location: ../pages/Applicant_home.php');
+} else {
+    echo $_SESSION['error'];
 }
