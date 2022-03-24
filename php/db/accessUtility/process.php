@@ -28,7 +28,7 @@ function getProcessProgressByNocID($NocID, &$conn)
             `DirectorDPD`,
             `DRTeacherCellRO`,
             `DRAcademicCellRO`,
-            `DRHomeLoneBranchRO`,
+            `DRHomeLoanBranchRO`,
             `DRConfidentialBranchRO`
         FROM
             Process
@@ -66,6 +66,39 @@ function getnocProcessByDepartment(&$conn, $progressState, $department)
                 Process.$department = '$progressState'
             ORDER BY
                 nocApplication.ApplicationDate
+            DESC
+    ;";
+    //echo "<br>".$sql."<br>";
+    //return;
+    $result = mysqli_query($conn, $sql);  // conn dabase connection reference. see in "database_connect.php" file.
+
+    $returnArray = array();
+
+    if (!empty($result) && mysqli_num_rows($result) >= 1) {
+        while ($row = mysqli_fetch_assoc($result)) {
+            array_push($returnArray, $row);
+        }
+        mysqli_free_result($result);
+        return $returnArray;
+    }
+
+    return null;
+}
+
+
+function getstudyleaveProcessByDepartment(&$conn, $progressState, $department){
+    $progressState = getprogressID($progressState);
+    $sql = "SELECT
+            studyleaveapplication.ApplicationID,
+            studyleaveapplication.ApplicationDate,
+            studyleaveapplication.UserIDref
+            FROM
+                `nocapplication`
+            INNER JOIN Process ON Process.ProcessID = studyleaveapplication.ProcessIDref
+            WHERE
+                Process.$department = '$progressState'
+            ORDER BY
+                studyleaveapplication.ApplicationDate
             DESC
     ;";
     //echo "<br>".$sql."<br>";
@@ -139,7 +172,7 @@ function createProcess($conn, $inputData)
     `DirectorDPD`,
     `DRTeacherCellRO`,
     `DRAcademicCellRO`,
-    `DRHomeLoneBranchRO`,
+    `DRHomeLoanBranchRO`,
     `DRConfidentialBranchRO`,
     `DRHigherStudyBranchRO`
 )
@@ -160,7 +193,7 @@ VALUES(
             $inputData['DirectorDPD'],
             $inputData['DRTeacherCellRO'],
             $inputData['DRAcademicCellRO'],
-            $inputData['DRHomeLoneBranchRO'],
+            $inputData['DRHomeLoanBranchRO'],
             $inputData['DRConfidentialBranchRO'],
             $inputData['DRHigherStudyBranchRO']
         );
@@ -220,9 +253,9 @@ function updateProcess($ProcessID, $inputData, &$conn)
         $status = json_encode($inputData['DRAcademicCellRO']);
         $sql = $sql . " `DRAcademicCellRO` = $status,";
     }
-    if (isset($inputData['DRHomeLoneBranchRO'])) {
-        $status = json_encode($inputData['DRHomeLoneBranchRO']);
-        $sql = $sql . " `DRHomeLoneBranchRO` = $status,";
+    if (isset($inputData['DRHomeLoanBranchRO'])) {
+        $status = json_encode($inputData['DRHomeLoanBranchRO']);
+        $sql = $sql . " `DRHomeLoanBranchRO` = $status,";
     }
     if (isset($inputData['DRConfidentialBranchRO'])) {
         $status = json_encode($inputData['DRConfidentialBranchRO']);

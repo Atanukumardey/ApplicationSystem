@@ -27,10 +27,10 @@ $progressStateType = array(
     'NotAssigned' => 6,
     'ChairToReg' => 7,
     'RegToHigherStd' => 8,
-    'HigherStdtoDept' => 9,
+    'HigherStdToDept' => 9,
     'HigherStdToReg' => 10,
     'RegToVC' => 11,
-    'VCtoReg' => 12,
-    'RegtoApplicant' => 13
+    'VCToReg' => 12,
+    'RegToApplicant' => 13
 );
 //     

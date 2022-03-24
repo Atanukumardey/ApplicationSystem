@@ -1,15 +1,10 @@
-CREATE TABLE `UserRole` (
-    `RoleID` int(11) NOT NULL,
-    `RoleName` varchar(255) NOT NULL);
-
-INSERT INTO `UserRole`(`RoleId`,`RoleName`) VALUES (1,'user'),(2,'Accounts Controller'),(3,'College Inspector'),(4,'Librarian'),
-(5,'Exam Controller'),(6,'Chief Engineer'),(7,'Chief Medical Officer'),(8,'Director, Department of Planning and Development'),
-(9,'Deputy Registrar (Teacher Cell), Registrar\'s Office'),(10,'Deputy Registrar (Academic Cell), Registrar\'s Office'),
-(11,'Deputy Registrar (Home Loan Branch), Registrar\'s Office'),(12,'Deputy Registrar (Confidential Branch) Registrar\'s Office'),
-(13,'Verifier'),(14,'Admin'), (15,'DepartmentChairman'),(16, 'Registrar'),(17,'Deputy Registrar (Higher Study Branch) Registrar\'s Office'),(18,'Vice Chancellor');
-
-ALTER TABLE `UserRole`
-  ADD PRIMARY KEY (`RoleId`);
-  
-ALTER TABLE `UserRole`
-  MODIFY `RoleId` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=1;
+CREATE TABLE `UserRole`(
+    `RoleID` INT(11) NOT NULL,
+    `RoleName` VARCHAR(255) NOT NULL
+); INSERT INTO `UserRole`(`RoleId`, `RoleName`)
+VALUES(1, 'user'),(2, 'AccountsController'),(3, 'CollegeInspector'),(4, 'Librarian'),(5, 'ExamController'),(6, 'ChiefEngineer'),(7, 'ChiefMedicalOfficer'),(8, 'DirectorDPD'),(9, 'DRTeacherCellRO'),(10, 'DRAcademicCellRO'),(11, 'DRHomeLoanBranchRO'),(12, 'DRConfidentialBranchRO'),(13, 'Verifier'),(14, 'Admin'),(15, 'DepartmentChairman'),(16, 'Registrar'),(17, 'DRHigherStudyBranchRO'),(18, 'ViceChancellor');
+ALTER TABLE
+    `UserRole` ADD PRIMARY KEY(`RoleId`);
+ALTER TABLE
+    `UserRole` MODIFY `RoleId` INT(11) NOT NULL AUTO_INCREMENT,
+    AUTO_INCREMENT = 1;

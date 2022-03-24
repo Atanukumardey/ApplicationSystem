@@ -9,7 +9,7 @@ CREATE TABLE `Process`(`ProcessID` int(11) PRIMARY KEY NOT NULL AUTO_INCREMENT,
                        `DirectorDPD` int(3),
                        `DRTeacherCellRO` int(3),
                        `DRAcademicCellRO` int(3),
-                       `DRHomeLoneBranchRO` int(3),
+                       `DRHomeLoanBranchRO` int(3),
                        `DRConfidentialBranchRO` int(3),
                        `DRHigherStudyBranchRO` int(3),
                       ); 

@@ -108,29 +108,6 @@ if (!isset($_SESSION['Email']) || !isset($_SESSION['RoleID'])) {
                             <input name="Designation" type="text" value="<?= $ApplicantspersonalData['Designation']; ?>" readonly />
                         </div>
                     </div>
-                    <!-- <div class="row">
-                        <div class="col-3">
-                            <label for="" class="form-label">Designation</label>
-                            <select name="designation" id="designation" readonly>
-                                <option value="" selected hidden>Select</option>
-                                <option value="1">Professor</option>
-                                <option value="2">Associate Prof.</option>
-                                <option value="3">Assistant Prof.</option>
-                                <option value="4">Lecturer</option>
-                            </select>
-                        </div>
-                    </div> -->
-                    <!-- <div class="row">
-                        <label class="form-label">Address</label>
-                        <div class="col-6 ">
-                            <input name="Address" type="text" placeholder="House,Village or locality,Police Station or Upazila,District" readonly />
-                        </div>
-                    </div>
-                    <div class="row">
-                        <div class="col-6">
-                            <input name="PostCode" type="number" placeholder="Post Code" readonly />
-                        </div>
-                    </div> -->
                     <div class="row">
                         <div class="col-6">
                             <label class="form-label">Work State</label>
