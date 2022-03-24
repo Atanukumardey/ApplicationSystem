@@ -58,7 +58,7 @@ if (!isset($_SESSION['Email']) || !isset($_SESSION['RoleID'])) {
         // $ApplicantspersonalData = getPersonalInfo($_GET['ApplicantID'], $conn);
         // $ApplicantUserData = getUserByUserID($_GET['ApplicantID'], $conn);
         ?>
-        <div class="container rounded mt-5 mb-2 " style="background-color:  rgb(232, 241, 241);">
+        <div class="container rounded mt-5 mb-2 " style="background-color:  rgb(232, 241, 241); max-width: auto;">
             <div class="stdofficenoti" style="display: flex;flex-direction:row;justify-content:space-between;">
                 <div style="padding-top: 20px;display: flex;">
                     <div class="logo">
@@ -122,15 +122,15 @@ if (!isset($_SESSION['Email']) || !isset($_SESSION['RoleID'])) {
                 </div>
             </div>
         </div>
-        <div class="container rounded mt-5 mb-2 " style="background-color:  rgb(232, 241, 241);">
+        <div class="container rounded mt-5 mb-2 " style="background-color:  rgb(232, 241, 241); width: auto;">
             <div class="row" style="font-size:large;">
                 <b>
                     Please leave any necessary comments accroding to your action(proceed/reject) in this box. Respective personals will be informed with this given information.
                 </b>
             </div>
             <div class="row">
-                <form>
-                    <textarea rows="5" cols="60" name="comments" style="width:45vw">
+                <form id="deptcomment">
+                    <textarea rows="5" cols="60" name="comments" style="width:45vw" form = "deptcomment">
                     </textarea>
                 </form>
             </div>

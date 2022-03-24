@@ -167,7 +167,7 @@ function updatenocApplicationByNocID($NocID, $inputData, &$conn)
     if (mysqli_query($conn, $sql)) {
         return true;
     } else {
-        return false; //echo "Error updating record: " . mysqli_error($conn);
+        //echo "Error updating record: " . mysqli_error($conn);
     }
 
     return false;

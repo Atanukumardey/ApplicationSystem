@@ -8,10 +8,20 @@ include "../php/db/accessUtility/Users.php";
 
 sessionStart(0, '/', 'localhost', true, true);
 
-if (1 != 1) { //!isset($_SESSION['Email']) || !isset($_SESSION['RoleID']
-    if ($_SESSION['Role'] != 'Applicant') {
-        header('Location: ../index.php');
+if (!isset($_SESSION['Email']) || !isset($_SESSION['RoleID'])) {
+    header('Location: ../index.php');
+}
+$validAccesspersons = array("DepartmentChairman", "ViceChancellor", "Registrar", "DRHigherStudyBranchRO");
+
+$trueval = false;
+for($i=0; $i<4; $i++){
+    if($_SESSION['Role'] == $validAccesspersons[$i]){
+        $trueval = true;
+        break;
     }
+}
+if ($trueval = false) {
+    header('Location: ../index.php');
 } else {
 ?>
 
@@ -36,7 +46,7 @@ if (1 != 1) { //!isset($_SESSION['Email']) || !isset($_SESSION['RoleID']
         include("../html/pageNavbar.php");
         // will get user id and study leave id by get method
 
-        $applicationID = 6; // $_GET['ApplicationID'];
+        $applicationID = $_GET['ApplicationID']; // ;
         $applicationData =  getStudyLeaveApplicationByApplicationID($applicationID, $conn);
 
         $attachmentData = getAttachments($conn, $applicationData['ProcessIDref']);
@@ -47,7 +57,7 @@ if (1 != 1) { //!isset($_SESSION['Email']) || !isset($_SESSION['RoleID']
         // get applicant+aplication information by userid and studyleaveid [user join personal info join studyleave]
 
         ?>
-        <form action="" method="POST" enctype="multipart/form-data" class="container rounded bg-white mt-5 mb-5">
+        <form action="../php/officeOperationOnStudyLeave.php" method="POST" enctype="multipart/form-data" class="container rounded bg-white mt-5 mb-5" id="stdform">
             <div>
                 <h3> Study Leave Application </h3>
             </div>
@@ -153,10 +163,8 @@ if (1 != 1) { //!isset($_SESSION['Email']) || !isset($_SESSION['RoleID']
                     </b>
                 </div>
                 <div class="row">
-                    <form>
-                        <textarea rows="5" cols="60" name="comments" style="width:45vw">
+                    <textarea rows="5" cols="60" name="comments" style="width:45vw" form="stdform">
                     </textarea>
-                    </form>
                 </div>
             </div>
 
@@ -170,7 +178,7 @@ if (1 != 1) { //!isset($_SESSION['Email']) || !isset($_SESSION['RoleID']
                     </div>
                 </div>
             </div>
-
+            <input name="ApplicationID" type="hidden" value="<?=$applicationID?>"/>
         </form>
         <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
 

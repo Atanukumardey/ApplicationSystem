@@ -31,6 +31,6 @@ $progressStateType = array(
     'HigherStdToReg' => 10,
     'RegToVC' => 11,
     'VCToReg' => 12,
-    'RegToApplicant' => 13
+    'RegToHigherStd2' => 13
 );
 //     

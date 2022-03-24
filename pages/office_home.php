@@ -12,6 +12,10 @@ sessionStart(0, '/', 'localhost', true, true);
 if (!isset($_SESSION['Email']) || !isset($_SESSION['RoleID'])) {
     header('Location: ../index.php');
 }
+
+if ($_SESSION['Role'] == 'Applicant') {
+    header('Location: ../index.php');
+}
 // if ($_SESSION['Role'] != 'Registrar') {
 //     header('Location: ../index.php');
 // }
@@ -137,7 +141,7 @@ function createApplicationUpdateTile($Applicationdata, $Application)
             <h4 class="card-text" style="width: max-content;"><?= $Applicationdata['ApplicationName'] ?></h4>
             <p style="width: max-content;"> Application Date: <?= $Applicationdata['ApplicationDate']; ?> </p>
             <div>
-                <form action="<?= $Application['location'] ?>" method="get" class="col" style="height: inherit;">
+                <form action="<?= $Application['leocation'] ?>" method="get" class="col" style="height: inherit;">
                     <button type="submit" name=<?= json_encode($Application['IDName']) ?> value="<?= $Applicationdata[$Application['IDName']]; ?>" class=" btn-primary btn-sm" style="padding-right: 20px; width:inherit; height:auto;" method="get" ">Details</button>
                     <input type = 'hidden' name='ApplicantID' value=" <?= $Applicationdata['UserIDref']; ?>">
                 </form>
