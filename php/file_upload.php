@@ -11,6 +11,16 @@ sessionStart(0, '/', 'localhost', true, true);
  * @param array $allowedFileType like array("pdf","png","jpg",...)
  */
 
+function checkinputFiles()
+{
+    $allowedFileType = array("pdf");
+    $status = fileValidityCheck("FileUpload", $allowedFileType);
+    if ($status == false) {
+        return false;
+    }
+    return true;
+}
+
 function fileValidityCheck($filesInstanceName, $allowedFileType)
 {
 

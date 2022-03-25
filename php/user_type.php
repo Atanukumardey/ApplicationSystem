@@ -1,10 +1,20 @@
 <?php
 
 $user_types = array(
-    "internal office", "Accounts Controller", "College Inspector", "Librarian", "Exam Controller", "Chief Engineer", "Chief Medical Officer",
-    "Director, Department of Planning and Development", "Deputy Registrar (Teacher Cell), Registrar's Office",
-    "Deputy Registrar (Academic Cell), Registrar's Office", "Deputy Registrar (Home Loan Branch), Registrar's Office",
-    "Deputy Registrar (Confidential Branch) Registrar's Office", "DepartmentChairman"
+    "internal office",
+    "AccountsController",
+    "CollegeInspector",
+    "Librarian",
+    "ExamController",
+    "ChiefEngineer",
+    "ChiefMedicalOfficer",
+    "DirectorDPD",
+    "DRTeacherCellRO",
+    "DRAcademicCellRO",
+    "DRHomeLoanBranchRO",
+    "DRConfidentialBranchRO",
+    "DepartmentChairman",
+    "DRHigherStudyBranchRO"
 );
 
 function checkUser($user)
@@ -34,7 +44,7 @@ $DBuserconstrains = array(
     'CollegeInspector',
     'Librarian',
     'ExamController',
-    'Chief Engineer',
+    'ChiefEngineer',
     'ChiefMedicalOfficer',
     'DirectorDPD',
     'DRTeacherCellRO',

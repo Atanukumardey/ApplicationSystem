@@ -5,8 +5,8 @@ include "../php/session/session.php";
 
 sessionStart(0, '/', 'localhost', true, true);
 
-if (!isset($_SESSION['Email']) || !isset($_SESSION['RoleID'])) {
-    header('Location: ../index.php');
+if (!isset($_SESSION['Email']) || !isset($_SESSION['RoleID']) || $_SESSION['Role'] == 'Applicant') {
+    header('Location: ../userManagement/logout.php');
 } else {
 ?>
     <!DOCTYPE html>
@@ -38,8 +38,8 @@ if (!isset($_SESSION['Email']) || !isset($_SESSION['RoleID'])) {
                 <h4> Select Departments For Assigning Task </h4>
                 <br>
                 <h3>বিভাগ/কেন্দ্র/দপ্তর</h3>
-                <form action="../php/registrar_task_assign_to_dept.php" method="POST">
-                    <input type='hidden' name='NocID' value='<?= $_GET['NocID'] ?>'>
+                <form action="../php/office_task_assign_to_dept.php" method="POST">
+                    <input type='hidden' name='ApplicationID' value='<?= $_GET['ApplicationID'] ?>'>
                     <div class="departments">
                         <?php
 

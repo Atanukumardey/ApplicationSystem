@@ -25,15 +25,6 @@ if (!isset($_SESSION['Email']) || !isset($_SESSION['RoleID']) || $_SESSION['Role
  * 5. Create attachments
  */
 
-function checkinputFiles()
-{
-    $allowedFileType = array("pdf");
-    $status = fileValidityCheck("FileUpload", $allowedFileType);
-    if ($status == false) {
-        return false;
-    }
-    return true;
-}
 function createANewSLA($processIDref, &$conn)
 {
     $inputData['ApplicationDate'] = date("Y-m-d");
@@ -55,7 +46,7 @@ function uploadFiles(&$conn, $processIDref)
     if (empty($_FILES)) {
         return true;
     }
-    if (!file_exists($_FILES['myfile']['tmp_name']) || !is_uploaded_file($_FILES['myfile']['tmp_name'])) {
+    if (!file_exists($_FILES['FileUpload']['tmp_name'][0]) || !is_uploaded_file($_FILES['FileUpload']['tmp_name'][0])) {
         return true;
     }
     $uploadDir = "../SiteData/Uploads/";
