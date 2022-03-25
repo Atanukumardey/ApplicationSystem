@@ -5,29 +5,13 @@ include "../php/db/accessUtility/personalInfo.php";
 include "../php/session/session.php";
 include "../php/db/accessUtility/process.php";
 include "../php/db/accessUtility/nocApplication.php";
+include "../php/util/backendutil.php";
 
 sessionStart(0, '/', 'localhost', true, true);
 
-if (!isset($_SESSION['Email']) || !isset($_SESSION['RoleID'])) {
-    header('Location: ../index.php');
+if (!isset($_SESSION['Email']) || !isset($_SESSION['RoleID']) || $_SESSION['Role'] == 'Applicant') {
+    header('Location: ../userManagement/logout.php');
 } else {
-    if (isset($_GET['submit']) && $_GET['submit'] == 'Approve') {
-        $inputData[$_SESSION['Department']] = 4; // Approved in processstatus;
-        // edit needed
-        //print_r($_GET);
-        echo "<br><br>";
-        ///print_r($inputData);
-        $NocData = getnocApplicationsByNocID($_GET['NocID'], $conn);
-        foreach ($NocData as $key => $value) {
-            echo "<br>'$value'<br>";
-        }
-        $processID = $NocData['ProcessIDref'];
-        echo "<br><br>";
-        if (updateProcess($processID, $inputData, $conn)) {
-            $_SESSION['success'] = 'Approved';
-            header('Location: office_home.php');
-        }
-    }
 
 ?>
     <!DOCTYPE html>
@@ -130,7 +114,7 @@ if (!isset($_SESSION['Email']) || !isset($_SESSION['RoleID'])) {
             </div>
             <div class="row">
                 <form id="deptcomment">
-                    <textarea rows="5" cols="60" name="comments" style="width:45vw" form = "deptcomment">
+                    <textarea rows="5" cols="60" name="comments" style="width:45vw" form="deptcomment">
                     </textarea>
                 </form>
             </div>

@@ -170,13 +170,14 @@ function createNOCsection(&$conn)
         $Application['status'] = "InProgress Applications";
         $applicationData = getnocApplicationsByProgressState($conn, 'InProgress');
         createApplicationSection($Application, $applicationData);
-    } else {
-        $applicationData = getnocProcessByDepartment($conn, "Assigned", $_SESSION['Department']);
-        createApplicationSection($Application, $applicationData);
-        $Application['status'] = "Inprogress Applications";
-        $applicationData = getnocProcessByDepartment($conn, "Inprogress", $_SESSION['Department']);
-        createApplicationSection($Application, $applicationData);
     }
+    // } else {
+    //     $applicationData = getnocProcessByDepartment($conn, "Assigned", $_SESSION['Department']);
+    //     createApplicationSection($Application, $applicationData);
+    //     $Application['status'] = "Inprogress Applications";
+    //     $applicationData = getnocProcessByDepartment($conn, "Inprogress", $_SESSION['Department']);
+    //     createApplicationSection($Application, $applicationData);
+    // }
 }
 
 
@@ -229,11 +230,15 @@ function createStudyLeavesection(&$conn)
             createApplicationSection($Application, $applicationData);
         }
     } else if ($_SESSION['Role'] == "DRHigherStudyBranchRO") {
-        $progressState[0] = $progressStateType['RegToHigherStd'];
-        $stateStatus[0] = "From Registrar";
-        $progressState[1] = $progressStateType['Assigned']; // HSTD has assigned the application to other departments for approvaln
-        $stateStatus[1] = "Assigned To Departments";
-        for ($i = 0; $i < 2; $i++) {
+        $progressState[0] = $progressStateType['RegToHigherStd2'];
+        $stateStatus[0] = "From Registrar(Final Approval)";
+        $progressState[1] = $progressStateType['AllDeptApproved'];
+        $stateStatus[1] = "All Department Approved";
+        $progressState[2] = $progressStateType['RegToHigherStd'];
+        $stateStatus[2] = "From Registrar(Initial State)";
+        $progressState[3] = $progressStateType['Assigned']; // HSTD has assigned the application to other departments for approvaln
+        $stateStatus[3] = "Assigned To Departments";
+        for ($i = 0; $i < 4; $i++) {
             $applicationData = getStudyLeaveApplicationByProgressState($progressState[$i], $conn);
             if ($applicationData != null) {
                 $Application['status'] = $stateStatus[$i];

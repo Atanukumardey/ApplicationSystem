@@ -1,7 +1,5 @@
 <?php
 $deptArray = array(
-    'ApplicationDate',
-    'ApprovalDate',
     'DepartmentChairman',
     'AccountsController',
     'CollegeInspector',
@@ -12,7 +10,7 @@ $deptArray = array(
     'DirectorDPD',
     'DRTeacherCellRO',
     'DRAcademicCellRO',
-    'DRHomeLoneBranchRO',
+    'DRHomeLoanBranchRO',
     'DRConfidentialBranchRO',
     'DRHigherStudyBranchRO'
 );
@@ -31,6 +29,7 @@ $progressStateType = array(
     'HigherStdToReg' => 10,
     'RegToVC' => 11,
     'VCToReg' => 12,
-    'RegToHigherStd2' => 13
+    'RegToHigherStd2' => 13,
+    'AllDeptApproved'=>14
 );
 //     

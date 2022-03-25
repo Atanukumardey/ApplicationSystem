@@ -13,7 +13,7 @@ if (!isset($_SESSION['Email']) || !isset($_SESSION['RoleID']) || $_SESSION['Role
 
 include "db/database_connect.php";
 include "db/accessUtility/process.php";
-include "db/accessUtility/nocApplication.php";
+include "db/accessUtility/studyleaveapplication.php";
 include "util/backendutil.php";
 
 
@@ -37,13 +37,13 @@ function mainTask(&$conn)
     global $ApplicationData;
     global $progressStateType;
     global $ApplicationID;
-    $dataArray['NocIDref'] = $_POST['NocID'];
     foreach ($GLOBALS['deptArray'] as $key) { // deptArray from  util/backendutil.php
         if (isset($_POST[$key])) {
             $dataArray[$key] = $progressStateType['Assigned']; // Assigned
         } else {
-            $dataArray[$key] = $progressStateType['notAssigned'];; // NotAssigned
+            $dataArray[$key] = $progressStateType['NotAssigned'];; // NotAssigned
         }
+        //echo "<br>".$key."=>" . $dataArray[$key];
     }
 
     if (!updateProcess($ApplicationData['ProcessIDref'], $dataArray, $conn)) {
@@ -74,5 +74,5 @@ if (checkValidInputData()) {
 function sendReport($state, $errorstate)
 {
     $_SESSION[$errorstate] = $state;
-    header('Location:../pages/registrar_home.php');
+    header('Location:../pages/office_home.php');
 }

@@ -140,7 +140,7 @@ function getProcess($processID, &$conn)
 
     if (!empty($result) && mysqli_num_rows($result) === 1) {
         $result =  mysqli_fetch_assoc($result);
-        return $result['NocVersion'];
+        return $result;
     }
     mysqli_free_result($result);
     return 0;
