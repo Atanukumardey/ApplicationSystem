@@ -167,7 +167,7 @@ function OfficeOperationOnStudyLeave_MainTask(&$conn)
 $_SESSION['error'] = "none";
 if (OfficeOperationOnStudyLeave_MainTask($conn)) {
     $_SESSION['success'] = "Succcessfully Submitted";
-    //header('Location: ../pages/Office_home.php');
+    header('Location: ../pages/Office_home.php');
 } else {
     echo $_SESSION['error'];
 }

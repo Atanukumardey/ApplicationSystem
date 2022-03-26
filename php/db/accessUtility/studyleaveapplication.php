@@ -140,6 +140,32 @@ function getStudyLeaveApplicationByApplicationID($ApplicationID, &$conn)
     return null;
 }
 
+function getStudyLeaveApplicationByUserID($UserID, &$conn)
+{
+    $sql = "SELECT
+                *
+            FROM
+                `studyleaveapplication`
+            WHERE
+                UserIDref = '$UserID'
+            ORDER BY
+                ApplicationID
+            DESC;
+                ";
+    $result = mysqli_query($conn, $sql);  // conn dabase connection reference. see in "database_connect.php" file.
+    $returnArray = array();
+
+    if (!empty($result) && mysqli_num_rows($result) >= 1) {
+        while ($row = mysqli_fetch_assoc($result)) {
+            array_push($returnArray, $row);
+        }
+        mysqli_free_result($result);
+        return $returnArray;
+    }
+    return null;
+}
+
+
 function getStudyLeaveApplicationByProcessID($ProcessID, &$conn)
 {
     $sql = "SELECT

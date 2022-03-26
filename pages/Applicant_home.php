@@ -2,6 +2,7 @@
 //phpinfo();
 include "../php/db/database_connect.php";
 include "../php/db/accessUtility/nocApplication.php";
+include "../php/db/accessUtility/studyleaveapplication.php";
 include "../php/session/session.php";
 include "../php/util/pageutil.php";
 
@@ -22,11 +23,19 @@ if ($_SESSION['Role'] != 'Applicant') {
         <meta http-equiv="X-UA-Compatible" content="IE=edge">
         <link rel="stylesheet" href="../css/bootstrap5/bootstrap.min.css">
         <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.1.0/css/all.css">
+        <link href="../css/floatingnavbar.css" rel="stylesheet">
         <link rel="stylesheet" href="../css/user_home_style.css">
         <link rel="stylesheet" href="../css/log_reg_footer.css">
+        <link href="../css/mfb.css" rel="stylesheet">
+
         <script src="../js/sweetalert2.min.js"></script>
+        <script src="../js/modernizr.touch.js"></script>
+        <script src="../js/dragable.js"></script>
         <title>Home</title>
         <link rel="shortcut icon" type="image/png" sizes="16x16" href="../assets/image/culogolightblue_lite.png">
+
+
+
     </head>
 
     <body style="overflow-x: hidden;">
@@ -50,6 +59,15 @@ if ($_SESSION['Role'] != 'Applicant') {
             include("../html/pageNavbar.php");
             ?>
         </div>
+        <?php
+        $NavbarData = array(
+            array('link' => 'Applicant_home.php?application=nocpassport', 'text' => 'NOC', 'icon' => 'fa fa-passport'),
+            array('link' => 'Applicant_home.php?application=studyleave', 'text' => 'Study Leave', 'icon' => 'fa fa-graduation-cap'),
+            array('link' => 'Applicant_home.php?application=leaveofabsence', 'text' => 'Leave Of Absence', 'icon' => 'fa fa-location-arrow'),
+            array('link' => '../userManagement/logout.php', 'text' => 'LogOut', 'icon' => 'fa fa-sign-out-alt'),
+        );
+        createFloatNavbar($NavbarData);
+        ?>
         <div class="c_container" style="margin-left: 10px;">
             <h3 style="padding-left: 20px; padding-top: 20px;">Application Forms</h3>
             <br><br>
@@ -68,13 +86,15 @@ if ($_SESSION['Role'] != 'Applicant') {
             <br>
             <div class="applicationformsupdate">
                 <?php
-                $row = getnocApplicationsByUserID($_SESSION['UserID'], $conn);
-                if ($row != null) {
-                    foreach ($row as $applicationdata) {
-                        createApplicationUpdateTile($applicationdata, "fa fa-passport fa-3x");
+                if (isset($_GET['application'])) {
+                    if ($_GET['application'] == 'nocpassport') {
+                        createNOCUpdatesection($conn);
+                    } else if ($_GET['application'] == 'studyleave') {
+                        createStudyLeaveUpdatesection($conn);
                     }
+                    unset($_GET['application']);
                 } else {
-                    echo "Not Available.";
+                    createNOCUpdatesection($conn);
                 }
                 ?>
             </div>
@@ -107,24 +127,60 @@ function createApplicationTile($link, $ApplicationType, $icon)
 <?php } ?>
 
 <?php
-function createApplicationUpdateTile($Applicationdata, $icon)
+function createApplicationUpdateTile($Applicationdata, $Application)
 {
 ?>
     <div class="applicationupdatecard">
         <div class="card-body" style="display: flex; flex-direction:row; justify-content:space-between; overflow:hidden;">
             <div class="row">
-                <i class="<?= $icon ?>" style="color:rgb(29, 70, 158)"></i>
+                <i class="<?= $Application['icon'] ?>" style="color:rgb(29, 70, 158)"></i>
             </div>
-            <h4 class="card-text" style="width: max-content;"> No objection Certificate</h4>
+            <h4 class="card-text" style="width: max-content;"> <?= $Application['name'] ?></h4>
             <p style="width: max-content;"> Application Date: <?= $Applicationdata['ApplicationDate']; ?> </p>
             <div>
-                <form action="users_application_update.php" method="post" class="col" style="height: inherit;">
-                    <button type="submit" name="NocID" value="<?= $Applicationdata['NocID']; ?>" class=" btn-primary btn-sm" style="padding-right: 20px; width:inherit; height:auto;" method="get" ">Check Progress</button>
+                <form action="<?= $Application['location'] ?>" method="post" class="col" style="height: inherit;">
+                    <button type="submit" name=<?= json_encode($Application['IDName']) ?> value="<?= $Applicationdata[$Application['IDName']]; ?>" class=" btn-primary btn-sm" style="padding-right: 20px; width:inherit; height:auto;" method="get" ">Check Progress</button>
                 </form>
             </div>
         </div>
     </div>
 <?php
 }
+?>
+<?php
+
+function createNOCUpdateSection(&$conn)
+{
+    $row = getnocApplicationsByUserID($_SESSION['UserID'], $conn);
+    if ($row != null) {
+        $Application['IDName'] = "NocID";
+        $Application['location'] = "users_application_update.php";
+        $Application['icon'] = "fa fa-passport fa-3x";
+        $Application['name'] = "No objection Certificate";
+        foreach ($row as $applicationdata) {
+            createApplicationUpdateTile($applicationdata, $Application);
+        }
+    } else {
+        echo "Not Available.";
+    }
+}
+
+function createStudyLeaveUpdatesection(&$conn)
+{
+    $row =  getStudyLeaveApplicationByUserID($_SESSION['UserID'], $conn);
+    if ($row != null) {
+        $Application['IDName'] = "ApplicationID";
+        $Application['location'] = "users_application_update.php?";
+        $Application['icon'] = "fa fa-passport fa-3x";
+        $Application['name'] = "Study Leave";
+        foreach ($row as $applicationdata) {
+            createApplicationUpdateTile($applicationdata, $Application);
+        }
+    } else {
+        echo "Not Available.";
+    }
+}
+
+
 ?>
  

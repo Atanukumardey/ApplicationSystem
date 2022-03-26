@@ -2,9 +2,9 @@
 include "../php/db/database_connect.php";
 include "../php/db/accessUtility/Users.php";
 include "../php/db/accessUtility/personalInfo.php";
+include "../php/db/accessUtility/studyleaveapplication.php";
 include "../php/session/session.php";
 include "../php/db/accessUtility/process.php";
-include "../php/db/accessUtility/nocApplication.php";
 include "../php/util/backendutil.php";
 
 sessionStart(0, '/', 'localhost', true, true);
@@ -34,11 +34,32 @@ if (!isset($_SESSION['Email']) || !isset($_SESSION['RoleID']) || $_SESSION['Role
         <link rel=" stylesheet" href="../css/Applicant/profile.css">
         <link rel="stylesheet" href="../css/user_home_style.css">
         <link rel="stylesheet" href="../css/log_reg_footer.css">
+
+        <script src="../js/sweetalert2.min.js"></script>
+        <script src="../js/modernizr.touch.js"></script>
+        <script src="../js/dragable.js"></script>
     </head>
 
     <body>
         <?php
         include("../html/pageNavbar.php");
+
+        $ApplicationID = $_GET["ApplicationID"];
+        $ApplicationInfo = getStudyLeaveApplicationByApplicationID($ApplicationID, $conn);
+        global $progressStateType;
+        $inputData = array($_SESSION['Role'] => $progressStateType['InProgress']);
+        if (!updateProcess($ApplicationInfo['ProcessIDref'], $inputData, $conn)) {
+            $_SESSION['error'] = "Internal System Update Error";
+        }
+        if (isset($_SESSION['error'])) {
+            //echo "<br>"."error"."<br>";
+            popupMessage('error', $_SESSION['error'], 'Ok');
+            unset($_SESSION['error']);
+        }
+        if (isset($_SESSION['success'])) {
+            popupMessage('success', $_SESSION['success'], 'Continue');;
+            unset($_SESSION['success']);
+        }
         // $ApplicantspersonalData = getPersonalInfo($_GET['ApplicantID'], $conn);
         // $ApplicantUserData = getUserByUserID($_GET['ApplicantID'], $conn);
         ?>
@@ -106,29 +127,30 @@ if (!isset($_SESSION['Email']) || !isset($_SESSION['RoleID']) || $_SESSION['Role
                 </div>
             </div>
         </div>
-        <div class="container rounded mt-5 mb-2 " style="background-color:  rgb(232, 241, 241); width: auto;">
-            <div class="row" style="font-size:large;">
-                <b>
-                    Please leave any necessary comments accroding to your action(proceed/reject) in this box. Respective personals will be informed with this given information.
-                </b>
-            </div>
-            <div class="row">
-                <form id="deptcomment">
-                    <textarea rows="5" cols="60" name="comments" style="width:45vw" form="deptcomment">
+        <form id="deptcomment" action="../php/OfficeStudyleaveNotificationHandle.php" method="POST">
+            <div class="container rounded mt-5 mb-2 " style="background-color:  rgb(232, 241, 241); width: auto;">
+                <div class="row" style="font-size:large;">
+                    <b>
+                        Please leave any necessary comments accroding to your action(proceed/reject) in this box. Respective personals will be informed with this given information.
+                    </b>
+                </div>
+                <div class="row">
+                    <textarea rows="5" cols="60" name="comments" style="width:45vw" form="deptcomment" required>
                     </textarea>
-                </form>
-            </div>
-        </div>
-        <div class="container rounded mb-5">
-            <div class="row">
-                <div class="col-md-6">
-                    <div class="mt-5 text-center"><button class="btn btn-primary profile-button" type="submit">Proceed</button></div>
-                </div>
-                <div class="col-md-6">
-                    <div class="mt-5 text-center"><button class="btn btn-primary profile-button" type="reset" id="resetBtn">Reject</button></div>
+                    <input type="hidden" name="ApplicationID" value = "<?= $_GET['ApplicationID'] ?>">
                 </div>
             </div>
-        </div>
+            <div class="container rounded mb-5">
+                <div class="row">
+                    <div class="col-md-6">
+                        <div class="mt-5 text-center"><button class="btn btn-primary profile-button" type="submit">Proceed</button></div>
+                    </div>
+                    <div class="col-md-6">
+                        <div class="mt-5 text-center"><button class="btn btn-primary profile-button" type="reset" id="resetBtn">Reject</button></div>
+                    </div>
+                </div>
+            </div>
+        </form>
     </body>
     <?php include('../html/footer.html');
     ?>

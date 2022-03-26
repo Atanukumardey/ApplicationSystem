@@ -9,13 +9,43 @@ include "db/accessUtility/studyleaveapplication.php";
 include "util/backendutil.php";
 include "db/accessUtility/comments.php";
 
+sessionStart(0, '/', 'localhost', true, true);
+
+
 if (!isset($_SESSION['Email']) || !isset($_SESSION['RoleID']) || $_SESSION['Role'] == 'Applicant') {
     header('Location: ../userManagement/logout.php');
 }
 
 global $ApplicationData, $ApplicationID;
-$ApplicationID = $_GET['ApplicationID'];
+$ApplicationID = $_POST['ApplicationID'];
 $ApplicationData = getStudyLeaveApplicationByApplicationID($ApplicationID, $conn);
+
+global $Comment;
+$Comment = $_POST['comments'] . "";
+
+unset($_SESSION['error']);
+unset($_SESSION['success']);
+
+function handleComments(&$conn)
+{
+    global $Comment;
+    global $processIDref;
+
+    if (strlen($Comment) < 2) {
+        $_SESSION['error'] = "Please make a comment";
+        return false;
+    } else if (getComment($conn, $_SESSION['UserID'], $processIDref) != null) {
+        if (!updateComment($conn, $_SESSION['UserID'], $processIDref, $Comment)) {
+            $_SESSION['error'] = "comment update problem OfficeOperationOnStudyLeave_MainTask";
+            return false;
+        }
+    } else if (!createNewComment($conn, $Comment, $_SESSION['UserID'], $processIDref)) {
+        $_SESSION['error'] = "comment create problem OfficeOperationOnStudyLeave_MainTask";
+        return false;
+    }
+    return true;
+}
+
 
 function DeptApproval(&$conn)
 {
@@ -48,8 +78,14 @@ function DeptApproval(&$conn)
     return true;
 }
 
-if (isset($_GET['submit']) && $_GET['submit'] == 'Approve') {
-    DeptApproval($conn);
+if (isset($_POST['submit']) && $_POST['submit'] == 'Approve') {
+    if(handleComments($conn)){
+        if(DeptApproval($conn)){
+            $_SESSION['success'] = "Operation Successfull";
+        }
+    }
+    header('Location: ../pages/Office_home.php');
+   //
 }
 
 
