@@ -1,6 +1,7 @@
 <?php
 
 $user_types = array(
+    "ViceChancellor",
     "internal office",
     "AccountsController",
     "CollegeInspector",

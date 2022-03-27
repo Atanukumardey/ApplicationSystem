@@ -143,10 +143,10 @@ if (!isset($_SESSION['Email']) || !isset($_SESSION['RoleID']) || $_SESSION['Role
             <div class="container rounded mb-5">
                 <div class="row">
                     <div class="col-md-6">
-                        <div class="mt-5 text-center"><button class="btn btn-primary profile-button" type="submit">Proceed</button></div>
+                        <div class="mt-5 text-center"><button class="btn btn-primary profile-button" name="submit" type="submit" value="Approve">Proceed</button></div>
                     </div>
                     <div class="col-md-6">
-                        <div class="mt-5 text-center"><button class="btn btn-primary profile-button" type="reset" id="resetBtn">Reject</button></div>
+                        <div class="mt-5 text-center"><button class="btn btn-primary profile-button" name="reset" type="reset" id="resetBtn" value="Reject">Reject</button></div>
                     </div>
                 </div>
             </div>

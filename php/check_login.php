@@ -46,6 +46,7 @@ if (isset($_POST['user_email']) && isset($_POST['password']) && isset($_POST['ro
 
         $result = mysqli_query($conn, $sql);
 
+        //echo $role;
         $roleid = (string) getRoleID($conn, $role);  // in query output $row['RoleID'] is string;
 
         //echo mysqli_num_rows($result);

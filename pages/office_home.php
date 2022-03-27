@@ -76,17 +76,19 @@ else {
          *          -- text 
          *          -- icon
          */
-        $NavbarData = array(
-            array('link' => 'office_home.php?application=nocpassport', 'text' => 'NOC', 'icon' => 'fa fa-passport'),
-            array('link' => 'office_home.php?application=studyleave', 'text' => 'Study Leave', 'icon' => 'fa fa-graduation-cap'),
-            array('link' => 'office_home.php?application=leaveofabsence', 'text' => 'Leave Of Absence', 'icon' => 'fa fa-location-arrow'),
-            array('link' => '../userManagement/logout.php', 'text' => 'LogOut', 'icon' => 'fa fa-sign-out-alt'),
-        );
+        $NavbarData = array();
+        $linkArrayIndex = 0;
+        if ($_SESSION['Role'] == "Registrar") {
+            $NavbarData[$linkArrayIndex++] = array('link' => 'office_home.php?application=nocpassport', 'text' => 'NOC', 'icon' => 'fa fa-passport');
+        }
+        $NavbarData[$linkArrayIndex++] = array('link' => 'office_home.php?application=studyleave', 'text' => 'Study Leave', 'icon' => 'fa fa-graduation-cap');
+        if ($_SESSION['Role'] == "Registrar" || $_SESSION['Role'] == "DepartmentChairman") {
+            $NavbarData[$linkArrayIndex++] = array('link' => 'office_home.php?application=leaveofabsence', 'text' => 'Leave Of Absence', 'icon' => 'fa fa-location-arrow');
+        }
+        $NavbarData[$linkArrayIndex++] = array('link' => '../userManagement/logout.php', 'text' => 'LogOut', 'icon' => 'fa fa-sign-out-alt');
+
         createFloatNavbar($NavbarData);
         ?>
-        <!-- <script>
-            dragElement(document.getElementById("menubar"));
-        </script> -->
         <div class="c_container" style="margin-left:10px">
             <?php
             if (isset($_GET['application'])) {
@@ -97,7 +99,11 @@ else {
                 }
                 unset($_GET['application']);
             } else {
-                createNOCsection($conn);
+                if ($_SESSION['Role'] == "Registrar") {
+                    createNOCsection($conn);
+                } else {
+                    createStudyLeavesection($conn);
+                }
             }
             ?>
         </div>
@@ -248,10 +254,11 @@ function createStudyLeavesection(&$conn)
     } else {
         $Application['location'] = "officeStudyLeaveNotification.php";
         $Application['status'] = "New Applications";
-        $applicationData = getstudyleaveProcessByDepartment($conn, "Assigned", $_SESSION['Department']);
+        //echo $_SESSION['Role'];
+        $applicationData = getstudyleaveProcessByDepartment($conn, "Assigned", $_SESSION['Role']);
         createApplicationSection($Application, $applicationData);
         $Application['status'] = "Inprogress Applications";
-        $applicationData = getstudyleaveProcessByDepartment($conn, "Inprogress", $_SESSION['Department']);
+        $applicationData = getstudyleaveProcessByDepartment($conn, "Inprogress", $_SESSION['Role']);
         createApplicationSection($Application, $applicationData);
     }
 }

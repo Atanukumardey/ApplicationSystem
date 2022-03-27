@@ -62,17 +62,23 @@ function mainTask(&$conn)
 
 //print_r($_POST);
 
-if (checkValidInputData()) {
-    if (mainTask($conn)) {
-        sendReport("Successfuly Assigned", "success");
+if ($_POST['submit'] == "Assign") {
+    if (checkValidInputData()) {
+        if (mainTask($conn)) {
+            $_SESSION['success'] = "Operation Successfull";
+        } else {
+            $_SESSION['error'] = "Error";
+        }
+    }
+} else if ($_POST['submit'] == "SendToRegistrar") {
+    //echo "here";
+    $inputData = array("ProgressState" => $progressStateType['HigherStdToReg']);
+    if (updateStudyLeaveApplicationByApplicationID($_POST['ApplicationID'], $inputData, $conn)) {
+        $_SESSION['success'] = "Operation Successfull";
     } else {
-        sendReport("ERROR", "error");
+        $_SESSION['error'] = "Error";
     }
 }
 
 
-function sendReport($state, $errorstate)
-{
-    $_SESSION[$errorstate] = $state;
-    header('Location:../pages/office_home.php');
-}
+header('Location:../pages/office_home.php?application=studyleave');

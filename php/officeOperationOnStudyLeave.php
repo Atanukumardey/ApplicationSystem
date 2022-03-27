@@ -19,11 +19,23 @@ global $ApplicationID;
 $ApplicationID = $_POST['ApplicationID'];
 
 global $Comment;
-$Comment = $_POST['comments'] . "";
-if (strlen($Comment) < 1) {
-    $Comment = "";
-}
+$Comment = $_POST['comments'];
 
+$length = 0;
+$length = strlen($Comment);
+$realleangth = 0;
+if ($length > 0) {
+    while ($Comment[$realleangth] == " ") {
+        $realleangth++;
+        if ($realleangth >= $length) {
+            break;
+        }
+    }
+}
+if ($realleangth >= $length)
+    $Comment = "";
+
+echo strlen($Comment);
 global $ApplicationData;
 $ApplicationData = getStudyLeaveApplicationByApplicationID($ApplicationID, $conn);
 
@@ -37,7 +49,9 @@ function handleComments(&$conn)
     global $Comment;
     global $processIDref;
 
+    //echo strlen($Comment);
     if (strlen($Comment) < 2) {
+        //echo " here";
     } else if (getComment($conn, $_SESSION['UserID'], $processIDref) != null) {
         if (!updateComment($conn, $_SESSION['UserID'], $processIDref, $Comment)) {
             $_SESSION['error'] = "comment update problem OfficeOperationOnStudyLeave_MainTask";
@@ -58,7 +72,7 @@ function uploadFiles(&$conn, $processIDref)
     if (!file_exists($_FILES['FileUpload']['tmp_name'][0]) || !is_uploaded_file($_FILES['FileUpload']['tmp_name'][0])) {
         return true;
     }
-    if(!checkinputFiles()){
+    if (!checkinputFiles()) {
         $_SESSION['error'] = "invalid file type";
         return false;
     }
@@ -95,6 +109,7 @@ function handleHigherStudyBranchCase(&$conn)
     global $ApplicationData;
     $processIDref = $ApplicationData['ProcessIDref'];
     global $ApplicationID;
+    //echo $ApplicationData['ProgressState'];
     if (!handleComments($conn)) {
         $_SESSION['error'] = "comment handle error in handleHigherStudyBranchCase";
         return false;
@@ -109,6 +124,8 @@ function handleHigherStudyBranchCase(&$conn)
     } else if ($ApplicationData['ProgressState'] == $progressStateType["Assigned"]) {
         //AllDeptApproved
         header("Location:../pages/office_task_assign.php?processID=$processIDref&ApplicationID=$ApplicationID&showstatus=1");
+    } else if ($ApplicationData['ProgressState'] == $progressStateType["AllDeptApproved"]) {
+        // header("Location:../pages/office_task_assign.php?processID=$processIDref&ApplicationID=$ApplicationID&showstatus=1");
     } else if ($ApplicationData['ProgressState'] == $progressStateType["RegToHigherStd2"]) {
         // Approval Page Sabbir's work
     }
@@ -124,7 +141,7 @@ function handleRegDeptVC(&$conn)
     if ($_SESSION['Role'] == 'DepartmentChairman') {   // if it is from dept chairman send it to registrar
         $statetrack = $progressStateType['ChairToReg'];
     } else if ($_SESSION['Role'] == 'ViceChancellor') { // from VC to Registrar
-        $statetrack = $progressStateType['VCTOReg'];
+        $statetrack = $progressStateType['VCToReg'];
     } else if ($_SESSION['Role'] == 'Registrar') {
         $currentState = $ApplicationData['ProgressState'];
         if ($currentState == $progressStateType['ChairToReg']) {    // registrar received it from chairman sending it to higherstudy
@@ -132,7 +149,7 @@ function handleRegDeptVC(&$conn)
         } else if ($currentState == $progressStateType['VCToReg']) {    // registrar received it from VC sending it to higherstudy
             $statetrack = $progressStateType['RegToHigherStd2'];
         } else if ($currentState == $progressStateType['HigherStdToReg']) { // registrar received it from HigherSTD sending it to VC
-            $statetrack = $progressStateType['VCTOReg'];
+            $statetrack = $progressStateType['RegToVC'];
         }
     }
 
@@ -156,18 +173,13 @@ function handleRegDeptVC(&$conn)
     }
     return true;
 }
-function OfficeOperationOnStudyLeave_MainTask(&$conn)
-{
-    if ($_SESSION['Role'] == 'DRHigherStudyBranchRO') {
-        // echo "here";
-        return handleHigherStudyBranchCase($conn);
-    }
-    return handleRegDeptVC($conn);
-}
-$_SESSION['error'] = "none";
-if (OfficeOperationOnStudyLeave_MainTask($conn)) {
-    $_SESSION['success'] = "Succcessfully Submitted";
-    header('Location: ../pages/Office_home.php');
+
+if ($_SESSION['Role'] == 'DRHigherStudyBranchRO') {
+    // echo "here";
+    handleHigherStudyBranchCase($conn);
 } else {
-    echo $_SESSION['error'];
+    if (handleRegDeptVC($conn)) {
+        $_SESSION['success'] = "Succcessfully Submitted";
+        header('Location: ../pages/Office_home.php?application=studyleave');
+    }
 }

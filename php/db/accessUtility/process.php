@@ -68,8 +68,8 @@ function getnocProcessByDepartment(&$conn, $progressState, $department)
                 nocApplication.ApplicationDate
             DESC
     ;";
-    //echo "<br>".$sql."<br>";
-    //return;
+    echo "<br>".$sql."<br>";
+    return;
     $result = mysqli_query($conn, $sql);  // conn dabase connection reference. see in "database_connect.php" file.
 
     $returnArray = array();
@@ -93,7 +93,7 @@ function getstudyleaveProcessByDepartment(&$conn, $progressState, $department){
             studyleaveapplication.ApplicationDate,
             studyleaveapplication.UserIDref
             FROM
-                `nocapplication`
+                `studyleaveapplication`
             INNER JOIN Process ON Process.ProcessID = studyleaveapplication.ProcessIDref
             WHERE
                 Process.$department = '$progressState'

@@ -49,7 +49,9 @@ if ($trueval = false) {
         $applicationID = $_GET['ApplicationID']; // ;
         $applicationData =  getStudyLeaveApplicationByApplicationID($applicationID, $conn);
 
+        //print_r($applicationData);
         $attachmentData = getAttachments($conn, $applicationData['ProcessIDref']);
+        //print_r($attachmentData);
 
         $ApplicantsPersonalData = getPersonalInfo($applicationData['UserIDref'], $conn);
         $ApplicantsUserData = getUserByUserID($applicationData['UserIDref'], $conn);
@@ -124,6 +126,7 @@ if ($trueval = false) {
                             <div class="custom-file" id="previousattachments" style="margin-top: 5px;">
                                 <?php
                                 $numofFile = 1;
+                                if($attachmentData!=null){
                                 foreach ($attachmentData as $attachment) { ?>
                                     <div class='row border-bottom'>
                                         <div class='col-md-12'>
@@ -132,7 +135,7 @@ if ($trueval = false) {
                                             <br>
                                         </div>
                                     </div>
-                                <?php } ?>
+                                <?php }} ?>
                             </div>
                             <br>
                             <hr />
@@ -163,7 +166,7 @@ if ($trueval = false) {
                     </b>
                 </div>
                 <div class="row">
-                    <textarea rows="5" cols="60" name="comments" style="width:45vw" form="stdform">
+                    <textarea rows="5" cols="60" name="comments" style="width:45vw" form="stdform">write here
                     </textarea>
                 </div>
             </div>

@@ -3,6 +3,7 @@
 error_reporting(E_ALL);
 ini_set('display_errors', 1);
 include "db/database_connect.php";
+include "session/session.php";
 include "db/dbAccessUtility.php";
 include "db/accessUtility/process.php";
 include "db/accessUtility/studyleaveapplication.php";
@@ -22,6 +23,8 @@ $ApplicationData = getStudyLeaveApplicationByApplicationID($ApplicationID, $conn
 
 global $Comment;
 $Comment = $_POST['comments'] . "";
+
+// print_r($_POST);
 
 unset($_SESSION['error']);
 unset($_SESSION['success']);
@@ -79,13 +82,13 @@ function DeptApproval(&$conn)
 }
 
 if (isset($_POST['submit']) && $_POST['submit'] == 'Approve') {
+    //echo "here";
     if(handleComments($conn)){
         if(DeptApproval($conn)){
             $_SESSION['success'] = "Operation Successfull";
         }
     }
     header('Location: ../pages/Office_home.php');
-   //
 }
 
 
