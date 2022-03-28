@@ -10,6 +10,12 @@ if (1 != 1) { //!isset($_SESSION['Email']) || !isset($_SESSION['RoleID']
         header('Location: ../index.php');
     }
 } else {
+    $userPersonalInfo = getPersonalInfo($_SESSION['UserID'], $conn);
+    if ($userPersonalInfo == null) {
+        //echo "correct";
+        $_SESSION['error'] = "Please Give Your Pesonal Information First";
+        header("Location: profile.php");
+    }
 ?>
 
     <!DOCTYPE html>

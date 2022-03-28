@@ -35,7 +35,7 @@ if ($length > 0) {
 if ($realleangth >= $length)
     $Comment = "";
 
-echo strlen($Comment);
+//echo strlen($Comment);
 global $ApplicationData;
 $ApplicationData = getStudyLeaveApplicationByApplicationID($ApplicationID, $conn);
 

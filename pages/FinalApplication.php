@@ -12,24 +12,36 @@ sessionStart(0, '/', 'localhost', true, true);
 if (!isset($_SESSION['Email']) || !isset($_SESSION['RoleID'])) {
     header('Location: ../index.php');
 } else {
-    if (isset($_GET['submit']) && $_GET['submit'] == 'Approve') {
-        $inputData[$_SESSION['Department']] = 4; // Approved in processstatus;
-        // edit needed
-        //print_r($_GET);
-        echo "<br><br>";
-        ///print_r($inputData);
-        $NocData = getnocApplicationsByNocID($_GET['NocID'], $conn);
-        foreach ($NocData as $key => $value) {
-            echo "<br>'$value'<br>";
-        }
-        $processID = $NocData['ProcessIDref'];
-        echo "<br><br>";
-        if (updateProcess($processID, $inputData, $conn)) {
-            $_SESSION['success'] = 'Approved';
-            header('Location: office_home.php');
-        }
-    }
-
+    global $deptNameKey;
+    $deptNameKey = array(
+        'DepartmentChairman',
+        'AccountsController',
+        'Librarian',
+        'CollegeInspector',
+        'ExamController',
+        'ChiefEngineer',
+        'DirectorDPD',
+        'ChiefMedicalOfficer',
+        'DRConfidentialBranchRO',
+        'DRTeacherCellRO',
+        'DRHomeLoanBranchRO',
+        'DRAcademicCellRO'
+    );
+    global $deptNameArray;
+    $deptNameArray = array(
+        "সভাপতি,<br>কম্পিউটার সায়েন্সে এন্ড ইঞ্জিনিয়ারিং বিভাগ",
+        "হিসাব রক্ষক",
+        "গ্রন্থাগারিক",
+        "কলেজ পরিদর্শক",
+        "পরীক্ষা নিয়ন্ত্রক ",
+        "প্রধান প্রকৌশলী",
+        "পরিচালক, <br>পরিকল্পনা ও উন্নয়ন দপ্তর",
+        "চীফ মেডিকেল অফিসার",
+        "ডেপুটি রেজিস্ট্রার (গোপনীয় শাখা)<br>রেজিস্ট্রার অফিস",
+        "উপ-রেজিস্ট্রার (শিক্ষক সেল)<br>রেজিস্ট্রার অফিস",
+        "ডেপুটি রেজিস্ট্রার (গৃহঋণ) এষ্টেট শাখা<br>রেজিস্ট্রার অফিস",
+        "ডেপুটি রেজিস্ট্রার (একাডেমিক শাখা) <br>রেজিস্ট্রার অফিস",
+    );
 ?>
     <!DOCTYPE html>
     <html lang="en">
@@ -128,7 +140,7 @@ if (!isset($_SESSION['Email']) || !isset($_SESSION['RoleID'])) {
                 <br><br>
                 <div style="padding: 10px;">
                     <?php
-                    $outputdata = getCommentData($conn, 10);
+                    $outputdata = getCommentData($conn, 12);
                     $count = 1;
                     foreach ($outputdata as $data) { ?>
                         <div>
@@ -142,6 +154,7 @@ if (!isset($_SESSION['Email']) || !isset($_SESSION['RoleID'])) {
                                         আপনার বিশ্বস্ত,
                                         <br>
                                         <?= $data['UserName'] ?>
+                                        <br>
                                     <?php
                                         for($i=0; $i<12;$i++){
                                             if($deptNameKey[$i] == $data['RoleName']){

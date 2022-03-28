@@ -2,6 +2,7 @@
 include "../php/db/database_connect.php";
 include "../php/db/accessUtility/personalInfo.php";
 include "../php/session/session.php";
+include "../php/util/pageutil.php";
 
 sessionStart(0, '/', 'localhost', true, true);
 
@@ -25,14 +26,30 @@ if (1 != 1) { //!isset($_SESSION['Email']) || !isset($_SESSION['RoleID'])
         <link rel=" stylesheet" href="../css/Applicant/profile.css">
         <link rel="stylesheet" href="../css/user_home_style.css">
         <link rel="stylesheet" href="../css/log_reg_footer.css">
-        <!-- <link rel="stylesheet" href="../css/nocform_style.css">
-      -->
+
+        <link href="../css/mfb.css" rel="stylesheet">
+
+        <script src="../js/sweetalert2.min.js"></script>
+        <script src="../js/modernizr.touch.js"></script>
+        <!-- <script src="../js/dragable.js"></script> -->
     </head>
 
     <body>
         <div style="max-width: 70vw;">
             <?php
             include("../html/pageNavbar.php");
+            if (isset($_SESSION['error'])) {
+                popupMessage('error', $_SESSION['error'], 'Ok');
+                unset($_SESSION['error']);
+            }
+            if (isset($_SESSION['success'])) {
+                popupMessage('success', $_SESSION['success'], 'Continue');;
+                unset($_SESSION['success']);
+            }
+            if (!isset($_SESSION['logedIN'])) {
+                loginSuccess();
+                $_SESSION['logedIN'] = true;
+            }
             ?>
         </div>
         <?php
@@ -55,7 +72,7 @@ if (1 != 1) { //!isset($_SESSION['Email']) || !isset($_SESSION['RoleID'])
         }
         ?>
         <div class="container rounded bg-white mt-5 mb-5">
-            <form id="personal-form" action="../php/createNewApplication.php" method="POST" ">
+            <form id="personal-form" action="../php/update_profile.php" method="POST" ">
             <div class=" row">
                 <div class="col-md-3 border-right">
                     <div class="d-flex flex-column align-items-center text-center p-3 py-5">
@@ -164,7 +181,8 @@ if (1 != 1) { //!isset($_SESSION['Email']) || !isset($_SESSION['RoleID'])
                             </div>
                         </div>
                         <div class="mt-5 text-center">
-                            <input type="submit" class="submit" name="submit" id="submit" value="Save Profile" />
+                            <div class="mt-5 text-center"><button class="btn btn-primary profile-button" type="submit" name="submit" id="submit" value="Save Profile">Submit</button></div>
+                            <!-- <input type="submit" class="submit" name="submit" id="submit" value="Save Profile" /> -->
                         </div>
                     </div>
                 </div>

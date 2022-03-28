@@ -166,7 +166,7 @@ if ($trueval = false) {
                     </b>
                 </div>
                 <div class="row">
-                    <textarea rows="5" cols="60" name="comments" style="width:45vw" form="stdform">write here
+                    <textarea rows="5" cols="60" name="comments" style="width:45vw" form="stdform">
                     </textarea>
                 </div>
             </div>
