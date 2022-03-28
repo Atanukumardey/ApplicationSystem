@@ -140,7 +140,7 @@ if (!isset($_SESSION['Email']) || !isset($_SESSION['RoleID'])) {
                 <br><br>
                 <div style="padding: 10px;">
                     <?php
-                    $outputdata = getCommentData($conn, 12);
+                    $outputdata = getCommentData($conn, $_GET['ApplicationID']);
                     $count = 1;
                     foreach ($outputdata as $data) { ?>
                         <div>
@@ -155,16 +155,15 @@ if (!isset($_SESSION['Email']) || !isset($_SESSION['RoleID'])) {
                                         <br>
                                         <?= $data['UserName'] ?>
                                         <br>
-                                    <?php
-                                        for($i=0; $i<12;$i++){
-                                            if($deptNameKey[$i] == $data['RoleName']){
+                                        <?php
+                                        for ($i = 0; $i < 12; $i++) {
+                                            if ($deptNameKey[$i] == $data['RoleName']) {
                                                 echo $deptNameArray[$i];
                                                 break;
                                             }
-
                                         }
-                                    //  $deptNameArray[$deptNameKey[$data['RoleName']]-1] 
-                                     ?>
+                                        //  $deptNameArray[$deptNameKey[$data['RoleName']]-1] 
+                                        ?>
                                         <br>
                                         চট্টগ্রাম বিশ্ববিদ্যালয়
                                         <br>
@@ -175,11 +174,20 @@ if (!isset($_SESSION['Email']) || !isset($_SESSION['RoleID'])) {
                         </div>
                     <?php
                     }
-
                     ?>
                 </div>
             </div>
-            <br><br>
+        </div>
+
+        <div class="row">
+            <form action="GrantStudyLeave.php" method="GET">
+                <div class="col-md-12">
+                    <div class="mt-5 text-center"><button class="btn btn-primary profile-button" type="submit">Make G.O.</button></div>
+                </div>
+                <input name="ApplicationID" type="hidden" value="<?= $_GET['ApplicationID'] ?>">
+            </form>
+        </div>
+        <br><br>
     </body>
     <?php include('../html/footer.html');
     ?>

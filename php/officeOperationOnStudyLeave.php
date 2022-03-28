@@ -125,9 +125,9 @@ function handleHigherStudyBranchCase(&$conn)
         //AllDeptApproved
         header("Location:../pages/office_task_assign.php?processID=$processIDref&ApplicationID=$ApplicationID&showstatus=1");
     } else if ($ApplicationData['ProgressState'] == $progressStateType["AllDeptApproved"]) {
-        // header("Location:../pages/office_task_assign.php?processID=$processIDref&ApplicationID=$ApplicationID&showstatus=1");
+         header("Location:../pages/office_task_assign.php?processID=$processIDref&ApplicationID=$ApplicationID&showstatus=1");
     } else if ($ApplicationData['ProgressState'] == $progressStateType["RegToHigherStd2"]) {
-        // Approval Page Sabbir's work
+        header("Location:../pages/FinalApplication.php?ApplicationID=$ApplicationID");
     }
     return true;
 }
