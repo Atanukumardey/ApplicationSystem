@@ -3,13 +3,11 @@
 include "../php/db/database_connect.php";
 include "../php/db/accessUtility/process.php";
 include "../php/session/session.php";
+include "../php/db/accessUtility/studyleaveapplication.php";
 
 sessionStart(0, '/', 'localhost', true, true);
 
-if (!isset($_SESSION['Email']) || !isset($_SESSION['RoleID'])) {
-	header('Location: ../index.php');
-}
-if ($_SESSION['Role'] != 'Applicant') {
+if (!isset($_SESSION['Email']) || !isset($_SESSION['RoleID']) || $_SESSION['Role'] != 'Applicant') {
 	header('Location: ../index.php');
 } else {
 ?>
@@ -30,9 +28,13 @@ if ($_SESSION['Role'] != 'Applicant') {
 		<div class="c_container" style="min-height: 100vh;">
 			<?php
 			include("../html/pageNavbar.php");
-			//echo "<br>" . $_POST['NocID'] . "<br>";
-			$ProgressInfo = getProcessProgressByNocID($_POST['NocID'], $conn);
-			if ($ProgressInfo == null) {
+			$Progressstate = null;
+			if (isset($_GET['ApplicationID'])) {
+				$Progressstate = getStudyLeaveApplicationProgressState($_GET['ApplicationID'], $conn); // getProcessProgressByNocID($_POST['NocID'], $conn);
+				$Progressstate = $Progressstate['ProgressState'];
+			}
+			// print_r($Progressstate);
+			if ($Progressstate == null) {
 			?>
 				<div class="card-columns mx-auto d-flex justify-content-center col-12">
 					<div class="applicationcard" style="width: 40rem;">
@@ -42,8 +44,7 @@ if ($_SESSION['Role'] != 'Applicant') {
 							</div>
 							<div class="col">
 								<h5 class="card-text">Authority hasn't seen your application.
-									You will see an update after the application is
-									assigned to respective departments by authority.</h5>
+									You will see an update after the process starts.</h5>
 							</div>
 						</div>
 					</div>
@@ -53,24 +54,7 @@ if ($_SESSION['Role'] != 'Applicant') {
 				$colors['Approved'] = "#68E186";
 				$colors['InProgress'] = "#E9EE38";
 				$colors['Rejected'] = "#F46464";
-				$colors['Assigned'] = "#62DCF3";
 				$departmentColor;
-				foreach ($ProgressInfo as $key => $value) {
-					//echo $key." => ".$value."<br>";
-					if ($value == '6') {
-						continue;
-					} else if ($value == '2') {
-						$departmentColor[$key] = $colors['InProgress'];
-					} else if ($value == '1') {
-						$departmentColor[$key] = $colors['Assigned'];
-					} else if ($value == '4') {
-						$departmentColor[$key] = $colors['Approved'];
-					} else if ($value == '5') {
-						$departmentColor[$key] = $colors['Rejected'];
-					} else {
-						continue;
-					}
-				}
 			?>
 				<div class="third">
 					<div class='row' style="display:flex; flex-direction:row; justify-content:space-around; padding-block:30px;">
@@ -79,7 +63,6 @@ if ($_SESSION['Role'] != 'Applicant') {
 						</div>
 						<div class='col-6' id='div_color_snippet'>
 							<ul id='ul_color_snippet'>
-								<li><i class="fas fa-circle" style="color: #62DCF3;"></i>Assigned</li>
 								<li><i class="fas fa-circle" style="color: #E9EE38;"></i>InProgress</li>
 								<li><i class="fas fa-circle" style="color: #68E186;"></i>Approved</li>
 								<li><i class="fas fa-circle" style="color: #F46464;"></i>Rejected</li>
@@ -88,42 +71,78 @@ if ($_SESSION['Role'] != 'Applicant') {
 					</div>
 					<div class="departments">
 						<?php
-						if (isset($departmentColor['DepartmentChairman'])) {
-							printDepartmentTile("সভাপতি,সংশ্লিষ্ট বিভাগ, <br /> চ. বি.", $departmentColor['DepartmentChairman']);
+						$departmentColor['DepartmentChairman'] = "none";
+						$dept = 6;
+						if ($Progressstate > 5) {
+							$departmentColor['DepartmentChairman'] = $colors['InProgress'];
+							if ($Progressstate > 6) {
+								$departmentColor['DepartmentChairman'] = $colors['Approved'];
+							}
 						}
-						if (isset($departmentColor['AccountsController'])) {
-							printDepartmentTile("হিসাব নিয়ামক, <br /> চ. বি.", $departmentColor['AccountsController']);
+						printDepartment("Department Chairman, <br />CU", $departmentColor['DepartmentChairman'], "fas fa-user-tie fa-4x", $dept);
+				$dept = 7;
+						$departmentColor['Registrar'] = "none";
+						if ($Progressstate > 6) {
+							$departmentColor['Registrar'] = $colors['InProgress'];
+							if ($Progressstate > 7) {
+								$departmentColor['Registrar'] = $colors['Approved'];
+							}
 						}
-						if (isset($departmentColor['Librarian'])) {
-							printDepartmentTile("গ্রন্থাগারিক, <br /> চ.বি.", $departmentColor['Librarian']);
+						printDepartment("Registrar Office, <br />CU", $departmentColor['Registrar'], "fas fa-registered fa-4x", $dept);
+				$dept = 8;
+						$departmentColor['HigherStudy'] = "none";
+						if ($Progressstate > 7) {
+							$departmentColor['HigherStudy'] = $colors['InProgress'];
+							if ($Progressstate > 8) {
+								$departmentColor['HigherStudy'] = $colors['Approved'];
+							}
 						}
-						if (isset($departmentColor['CollegeInspector'])) {
-							printDepartmentTile("কলেজ পরিদর্শক, <br /> চ. বি.", $departmentColor['CollegeInspector']);
+						printDepartment("Higher Study Branch, <br />CU", $departmentColor['HigherStudy'], "fa fa-graduation-cap fa-4x", $dept);
+				$dept = 9;
+						$departmentColor['HigherStdToDept'] = "none";
+						if ($Progressstate > 8) {
+							$departmentColor['HigherStdToDept'] = $colors['InProgress'];
+							if ($Progressstate > 9) {
+								$departmentColor['HigherStdToDept'] = $colors['Approved'];
+							}
 						}
-						if (isset($departmentColor['ExamController'])) {
-							printDepartmentTile("পরীক্ষা নিয়ন্ত্রক, <br /> চ. বি.", $departmentColor['ExamController']);
+						printDepartment("Assigned To different Department, <br />CU", $departmentColor['HigherStdToDept'], "fas fa-university fa-4x", $dept);
+				$dept = 10;
+						$departmentColor['Registrar'] = "none";
+						if ($Progressstate > 9) {
+							$departmentColor['Registrar'] = $colors['InProgress'];
+							if ($Progressstate > 10) {
+								$departmentColor['Registrar'] = $colors['Approved'];
+							}
 						}
-						if (isset($departmentColor['ChiefEngineer'])) {
-							printDepartmentTile("প্রধান প্রকৌশলী, <br /> চ. বি", $departmentColor['ChiefEngineer']);
+						printDepartment("Registrar Office, <br />CU", $departmentColor['Registrar'], "fas fa-registered fa-4x", $dept);
+				$dept = 11;
+						$departmentColor['ViceChancellor'] = "none";
+						if ($Progressstate > 10) {
+							$departmentColor['ViceChancellor'] = $colors['InProgress'];
+							if ($Progressstate > 11) {
+								$departmentColor['ViceChancellor'] = $colors['Approved'];
+							}
 						}
-						if (isset($departmentColor['DirectorDPD'])) {
-							printDepartmentTile("পরিচালক, পরিকল্পনা ও উন্নয়ন দপ্তর <br /> চ. বি. ", $departmentColor['DirectorDPD']);
+						printDepartment("Vice Chancellor Office, <br />CU", $departmentColor['ViceChancellor'], "fas fa-user-alt fa-4x", $dept);
+				$dept = 12;
+						$departmentColor['Registrar'] = "none";
+						if ($Progressstate > 11) {
+							$departmentColor['Registrar'] = $colors['InProgress'];
+							if ($Progressstate > 12) {
+								$departmentColor['Registrar'] = $colors['Approved'];
+							}
 						}
-						if (isset($departmentColor['DRTeacherCellRO'])) {
-							printDepartmentTile("উপ রেজিস্ট্রার <br /> (শিক্ষক সেল) রেজিস্ট্রার অফিস, <br /> চ. বি.", $departmentColor['DRTeacherCellRO']);
+						printDepartment("Registrar Office, <br />CU", $departmentColor['Registrar'], "fas fa-registered fa-4x", $dept);
+				$dept = 13;
+						$departmentColor['HigherStudy'] = "none";
+						if ($Progressstate > 12) {
+							$departmentColor['HigherStudy'] = $colors['InProgress'];
+							if ($Progressstate > 13) {
+								$departmentColor['HigherStudy'] = $colors['Approved'];
+							}
 						}
-						if (isset($departmentColor['ChiefMedicalOfficer'])) {
-							printDepartmentTile("চীফ মেডিকেল অফিসার, <br /> চ. বি. ", $departmentColor['ChiefMedicalOfficer']);
-						}
-						if (isset($departmentColor['DRAcademicCellRO'])) {
-							printDepartmentTile("ডেপুটি রেজিস্ট্রার <br /> (একাডেমিক শাখা) রেজিস্ট্রার অফিস, <br /> চ. বি.", $departmentColor['DRAcademicCellRO']);
-						}
-						if (isset($departmentColor['DRHomeLoneBranchRO'])) {
-							printDepartmentTile("ডেপুটি রেজিস্ট্রার <br /> (গৃহ ঋণ শাখা), রেজিস্ট্রার অফিস, <br /> চ. বি.", $departmentColor['DRHomeLoneBranchRO']);
-						}
-						if (isset($departmentColor['DRConfidentialBranchRO'])) {
-							printDepartmentTile("ডেপুটি রেজিস্ট্রার <br /> (গোপনীয় শাখা) রেজিস্ট্রার অফিস, <br /> চ. বি.", $departmentColor['DRConfidentialBranchRO']);
-						}
+						printDepartment("Higher Study Branch, <br />CU", $departmentColor['HigherStudy'], "fa fa-graduation-cap fa-4x", $dept);
 						?>
 					</div>
 				</div>
@@ -141,15 +160,27 @@ if ($_SESSION['Role'] != 'Applicant') {
 <?php } ?>
 
 <?php
-function printDepartmentTile($Department, $color)
+function printDepartment($Department, $color, $icon, $dept)
 {
+	// echo $Progressstate;
 ?>
 	<div class="department">
-		<div class="img" style="background-color:<?php echo $color ?>;">
-			<img src="../assets/image/school.png" class="dept-icon">
-		</div>
-		<div class="box">
-			<p><?php echo $Department; ?></p>
-		</div>
+		<label>
+			<?php if ($dept == 9) { ?>
+				<a href="users_application_updates.php?ApplicationID=<?= $_GET['ApplicationID'] ?>">
+				<?php } ?>
+				<span>
+					<div class="img" style="background-color:<?php echo $color ?>;">
+						<i class="<?= $icon ?>" style='color:rgb(24, 49, 83)'></i>
+						<!-- <img src="../assets/image/school.png" class="dept-icon"> -->
+					</div>
+					<div class="box">
+						<h8><?php echo $Department; ?></h8>
+					</div>
+				</span>
+				<?php if ($dept == 9) { ?>
+				</a>
+			<?php } ?>
+		</label>
 	</div>
 <?php } ?>

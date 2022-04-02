@@ -98,29 +98,29 @@ if (!isset($_SESSION['Email']) || !isset($_SESSION['RoleID']) || $_SESSION['Role
                     <div class="departments">
                         <?php
 
-                        printDepartmentSelectionTile("সভাপতি,সংশ্লিষ্ট বিভাগ, <br /> চ. বি.", 'DepartmentChairman', $departmentColor['DepartmentChairman']);
+                        printDepartmentSelectionTile("সভাপতি,সংশ্লিষ্ট বিভাগ, <br /> চ. বি.", 'DepartmentChairman', $departmentColor['DepartmentChairman'], "fas fa-user-tie fa-4x");
 
-                        printDepartmentSelectionTile("হিসাব নিয়ামক, <br /> চ. বি.", 'AccountsController', $departmentColor['AccountsController']);
+                        printDepartmentSelectionTile("হিসাব নিয়ামক, <br /> চ. বি.", 'AccountsController', $departmentColor['AccountsController'],"fas fa-money-check fa-4x");
 
-                        printDepartmentSelectionTile("গ্রন্থাগারিক, <br /> চ.বি.", 'Librarian', $departmentColor['Librarian']);
+                        printDepartmentSelectionTile("গ্রন্থাগারিক, <br /> চ.বি.", 'Librarian', $departmentColor['Librarian'], "fas fa-book fa-4x");
 
-                        printDepartmentSelectionTile("কলেজ পরিদর্শক, <br /> চ. বি.", 'CollegeInspector', $departmentColor['CollegeInspector']);
+                        printDepartmentSelectionTile("কলেজ পরিদর্শক, <br /> চ. বি.", 'CollegeInspector', $departmentColor['CollegeInspector'], "fas fa-user-friends fa-4x");
 
-                        printDepartmentSelectionTile("পরীক্ষা নিয়ন্ত্রক, <br /> চ. বি.", 'ExamController', $departmentColor['ExamController']);
+                        printDepartmentSelectionTile("পরীক্ষা নিয়ন্ত্রক, <br /> চ. বি.", 'ExamController', $departmentColor['ExamController'],"fas fa-pen-nib fa-4x");
 
-                        printDepartmentSelectionTile("প্রধান প্রকৌশলী, <br /> চ. বি", 'ChiefEngineer', $departmentColor['ChiefEngineer']);
+                        printDepartmentSelectionTile("প্রধান প্রকৌশলী, <br /> চ. বি", 'ChiefEngineer', $departmentColor['ChiefEngineer'], "fas fa-user-cog fa-4x");
 
-                        printDepartmentSelectionTile("পরিচালক, পরিকল্পনা ও উন্নয়ন দপ্তর <br /> চ. বি. ", 'DirectorDPD', $departmentColor['DirectorDPD']);
+                        printDepartmentSelectionTile("পরিচালক, পরিকল্পনা ও উন্নয়ন দপ্তর <br /> চ. বি. ", 'DirectorDPD', $departmentColor['DirectorDPD'], "fas fa-building fa-4x");
 
-                        printDepartmentSelectionTile("উপ রেজিস্ট্রার <br /> (শিক্ষক সেল) রেজিস্ট্রার অফিস, <br /> চ. বি.", 'DRTeacherCellRO', $departmentColor['DRTeacherCellRO']);
+                        printDepartmentSelectionTile("উপ রেজিস্ট্রার <br /> (শিক্ষক সেল) রেজিস্ট্রার অফিস, <br /> চ. বি.", 'DRTeacherCellRO', $departmentColor['DRTeacherCellRO'], "fas fa-chalkboard-teacher fa-4x");
 
-                        printDepartmentSelectionTile("চীফ মেডিকেল অফিসার, <br /> চ. বি. ", 'ChiefMedicalOfficer', $departmentColor['ChiefMedicalOfficer']);
+                        printDepartmentSelectionTile("চীফ মেডিকেল অফিসার, <br /> চ. বি. ", 'ChiefMedicalOfficer', $departmentColor['ChiefMedicalOfficer'], "fas fa-user-md fa-4x");
 
-                        printDepartmentSelectionTile("ডেপুটি রেজিস্ট্রার <br /> (একাডেমিক শাখা) রেজিস্ট্রার অফিস, <br /> চ. বি.", 'DRAcademicCellRO', $departmentColor['DRAcademicCellRO']);
+                        printDepartmentSelectionTile("ডেপুটি রেজিস্ট্রার <br /> (একাডেমিক শাখা) রেজিস্ট্রার অফিস, <br /> চ. বি.", 'DRAcademicCellRO', $departmentColor['DRAcademicCellRO'], "fas fa-university fa-4x");
 
-                        printDepartmentSelectionTile("ডেপুটি রেজিস্ট্রার <br /> (গৃহ ঋণ শাখা), রেজিস্ট্রার অফিস, <br /> চ. বি.", 'DRHomeLoneBranchRO', $departmentColor['DRHomeLoanBranchRO']);
+                        printDepartmentSelectionTile("ডেপুটি রেজিস্ট্রার <br /> (গৃহ ঋণ শাখা), রেজিস্ট্রার অফিস, <br /> চ. বি.", 'DRHomeLoneBranchRO', $departmentColor['DRHomeLoanBranchRO'], "fas fa-hand-holding-usd fa-4x");
 
-                        printDepartmentSelectionTile("ডেপুটি রেজিস্ট্রার <br /> (গোপনীয় শাখা) রেজিস্ট্রার অফিস, <br /> চ. বি.", 'DRConfidentialBranchRO', $departmentColor['DRConfidentialBranchRO']);
+                        printDepartmentSelectionTile("ডেপুটি রেজিস্ট্রার <br /> (গোপনীয় শাখা) রেজিস্ট্রার অফিস, <br /> চ. বি.", 'DRConfidentialBranchRO', $departmentColor['DRConfidentialBranchRO'], "fas fa-user-secret fa-4x");
 
                         ?>
                     </div>
@@ -143,8 +143,9 @@ if (!isset($_SESSION['Email']) || !isset($_SESSION['RoleID']) || $_SESSION['Role
     ?>
 
     </html>
+
     <?php
-    function printDepartmentSelectionTile($Department, $DepartmentKey, $color)
+    function printDepartmentSelectionTile($Department, $DepartmentKey, $color, $icon)
     {
     ?>
         <div class="department">
@@ -152,7 +153,8 @@ if (!isset($_SESSION['Email']) || !isset($_SESSION['RoleID']) || $_SESSION['Role
                 <input class="deptassignopt" name='<?= $DepartmentKey ?>' type="checkbox" value='Assigned' />
                 <span>
                     <div class="img" style="background-color:<?php echo $color ?>;">
-                        <img src="../assets/image/school.png" class="dept-icon">
+                        <i class="<?=$icon?>" style='color:rgb(24, 49, 83)'></i>
+                        <!-- <img src="../assets/image/school.png" class="dept-icon"> -->
                     </div>
                     <div class="box">
                         <h8><?php echo $Department; ?></h8>

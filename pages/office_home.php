@@ -242,8 +242,9 @@ function createStudyLeavesection(&$conn)
         $stateStatus[1] = "All Department Approved";
         $progressState[2] = $progressStateType['RegToHigherStd'];
         $stateStatus[2] = "From Registrar(Initial State)";
-        $progressState[3] = $progressStateType['Assigned']; // HSTD has assigned the application to other departments for approvaln
+        $progressState[3] = $progressStateType['HigherStdToDept']; // HSTD has assigned the application to other departments for approvaln
         $stateStatus[3] = "Assigned To Departments";
+        echo $progressState[3];
         for ($i = 0; $i < 4; $i++) {
             $applicationData = getStudyLeaveApplicationByProgressState($progressState[$i], $conn);
             if ($applicationData != null) {
@@ -258,7 +259,7 @@ function createStudyLeavesection(&$conn)
         $applicationData = getstudyleaveProcessByDepartment($conn, "Assigned", $_SESSION['Role']);
         createApplicationSection($Application, $applicationData);
         $Application['status'] = "Inprogress Applications";
-        $applicationData = getstudyleaveProcessByDepartment($conn, "Inprogress", $_SESSION['Role']);
+        $applicationData = getstudyleaveProcessByDepartment($conn, "InProgress", $_SESSION['Role']);
         createApplicationSection($Application, $applicationData);
     }
 }

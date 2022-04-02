@@ -18,7 +18,7 @@ if (!isset($_SESSION['Email']) || !isset($_SESSION['RoleID']) || $_SESSION['Role
 }
 
 
-/*
+
 function personalInfoNeedUpdate(&$conn)
 {
     //echo "from functon <br>";
@@ -76,9 +76,8 @@ function handleUserData(&$conn)
         }
     }
     return true;
-} */
-
-if (!updatePersonalInfo($_SESSION['UserID'], $_POST, $conn)) {
+} 
+if (!handlePersonalInfo($conn)||!handleUserData($conn)) {
     $_SESSION['error'] = "Update Not Successfull";
 } else {
     $_SESSION['success'] = "Update Successfull";

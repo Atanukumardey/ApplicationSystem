@@ -8,23 +8,16 @@ include "../php/db/accessUtility/nocApplication.php";
 
 sessionStart(0, '/', 'localhost', true, true);
 
-
-
-if (!isset($_SESSION['Email']) || !isset($_SESSION['RoleID'])) {
-    header('Location: ../index.php');
+if (!isset($_SESSION['Email']) || !isset($_SESSION['RoleID']) || $_SESSION['Role'] != 'Applicant') {
+    header('Location: ../userManagement/logout.php');
 } else {
     if (isset($_GET['submit']) && $_GET['submit'] == 'Approve') {
         $inputData[$_SESSION['Department']] = 4; // Approved in processstatus;
-        // edit needed
-        //print_r($_GET);
-        echo "<br><br>";
-        ///print_r($inputData);
+
         $NocData = getnocApplicationsByNocID($_GET['NocID'], $conn);
-        foreach ($NocData as $key => $value) {
-            echo "<br>'$value'<br>";
-        }
+
         $processID = $NocData['ProcessIDref'];
-        echo "<br><br>";
+
         if (updateProcess($processID, $inputData, $conn)) {
             $_SESSION['success'] = 'Approved';
             header('Location: office_home.php');
@@ -72,16 +65,10 @@ if (!isset($_SESSION['Email']) || !isset($_SESSION['RoleID'])) {
         }
         //print_r($ApplicantspersonalData);
 
-        $formActionDestination = "";
-        if ($_SESSION['Department'] == 'Registrar') {
-            $formActionDestination = "registrar_task_assign.php";
-        } else {
-            $formActionDestination = ""; //../php/office_form_operations.php
-        }
 
         ?>
         <div id='container'>
-            <form id="job-form" action='<?php echo  $formActionDestination; ?>' method="GET" style="width:800px; margin:0 auto;">
+            <form id="job-form" action="" method="GET" style="width:800px; margin:0 auto;">
                 <section>
                     <h2 class="form-section-title">Applicants Information</h2>
                     <div class="row">
@@ -178,10 +165,8 @@ if (!isset($_SESSION['Email']) || !isset($_SESSION['RoleID'])) {
                             </div>
                         </div>
                     </section>
-                    <input type="hidden" name="NocID" value='<?= $_GET['NocID'] ?>'>
                     <div class="row-6" style="display:flex; flex-direction:row; justify-content:space-evenly; padding-block:30px">
-                        <?php $submitText = $_SESSION['Department'] == 'Registrar' ? 'Proceed' : 'Approve'; ?>
-                        <input type="submit" class="submit" name="submit" id="submit" value=<?= json_encode($submitText) ?> />
+                        <input type="submit" class="submit" name="submit" id="submit" value='Approve' />
                         <input type="reset" class="reset" name="reset" id="reset" value="Problem" />
                         <input type="hidden" name="NocID" value=<?= $_GET['NocID'] ?>>
                         <input type="hidden" name="ApplicantID" value=<?= $_GET['ApplicantID'] ?>>

@@ -47,6 +47,39 @@ function getProcessProgressByNocID($NocID, &$conn)
 }
 
 
+function getProcessProgressByStudyLeaveID($ApplicationID, &$conn)
+{
+    $sql = "SELECT
+            `ApplicationDate`,
+            `ApprovalDate`,
+            `DepartmentChairman`,
+            `AccountsController`,
+            `CollegeInspector`,
+            `Librarian`,
+            `ExamController`,
+            `ChiefEngineer`,
+            `ChiefMedicalOfficer`,
+            `DirectorDPD`,
+            `DRTeacherCellRO`,
+            `DRAcademicCellRO`,
+            `DRHomeLoanBranchRO`,
+            `DRConfidentialBranchRO`
+        FROM
+            Process
+        INNER JOIN StudyLeaveApplication ON StudyLeaveApplication.ProcessIDref = Process.ProcessID
+        WHERE
+            StudyLeaveApplication.ApplicationID = '$ApplicationID';
+            ";
+    // echo "<br>".$sql."<br>";
+    $result = mysqli_query($conn, $sql);
+
+    if (empty($result) || mysqli_num_rows($result) != 1) {
+        mysqli_free_result($result);
+        return null;
+    }
+    return mysqli_fetch_assoc($result);
+}
+
 
 
 /**

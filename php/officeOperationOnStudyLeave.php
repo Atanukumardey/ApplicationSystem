@@ -121,7 +121,7 @@ function handleHigherStudyBranchCase(&$conn)
     if ($ApplicationData['ProgressState'] == $progressStateType["RegToHigherStd"]) {
 
         header("Location:../pages/office_task_assign.php?processID=$processIDref&ApplicationID=$ApplicationID");
-    } else if ($ApplicationData['ProgressState'] == $progressStateType["Assigned"]) {
+    } else if ($ApplicationData['ProgressState'] == $progressStateType["HigherStdToDept"]) {
         //AllDeptApproved
         header("Location:../pages/office_task_assign.php?processID=$processIDref&ApplicationID=$ApplicationID&showstatus=1");
     } else if ($ApplicationData['ProgressState'] == $progressStateType["AllDeptApproved"]) {

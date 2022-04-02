@@ -39,7 +39,7 @@ function mainTask(&$conn)
     global $ApplicationID;
     foreach ($GLOBALS['deptArray'] as $key) { // deptArray from  util/backendutil.php
         if (isset($_POST[$key])) {
-            $dataArray[$key] = $progressStateType['Assigned']; // Assigned
+            $dataArray[$key] = $progressStateType['HigherStdToDept']; // Assigned
         } else {
             $dataArray[$key] = $progressStateType['NotAssigned'];; // NotAssigned
         }
@@ -51,7 +51,7 @@ function mainTask(&$conn)
         return false;
     }
     // need update in studyLeaveApplication table progress to Assigned
-    $inputdata = array('ProgressState' => $progressStateType['Assigned']);
+    $inputdata = array('ProgressState' => $progressStateType['HigherStdToDept']);
     if (!updateStudyLeaveApplicationByApplicationID($ApplicationID, $inputdata, $conn)) {
         $_SESSION['error'] = "Update Process ERROR in office task assign to dept";
         return false;
