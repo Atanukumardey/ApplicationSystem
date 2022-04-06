@@ -44,7 +44,7 @@ if (!isset($_SESSION['Email']) || !isset($_SESSION['RoleID']) || $_SESSION['Role
             unset($_SESSION['error']);
         }
         if (isset($_SESSION['success'])) {
-            popupMessage('success', $_SESSION['success'], 'Continue');;
+            popupMessage('success', $_SESSION['success'], 'Continue');
             unset($_SESSION['success']);
         }
         if (!isset($_SESSION['logedIN'])) {

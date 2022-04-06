@@ -3,6 +3,7 @@ include "../php/db/database_connect.php";
 include "../php/db/accessUtility/Users.php";
 include "../php/db/accessUtility/personalInfo.php";
 include "../php/session/session.php";
+include "../php/util/pageutil.php";
 include "../php/db/accessUtility/process.php";
 include "../php/StudyLeaveFinalDataProcess.php";
 include "../php/util/backendutil.php";
@@ -179,7 +180,7 @@ if (!isset($_SESSION['Email']) || !isset($_SESSION['RoleID'])) {
             </div>
         </div>
 
-        <div class="row">
+        <div class="row" style="padding-bottom: 5vh;">
             <form action="GrantStudyLeave.php" method="GET">
                 <div class="col-md-12">
                     <div class="mt-5 text-center"><button class="btn btn-primary profile-button" type="submit">Make G.O.</button></div>
@@ -187,7 +188,6 @@ if (!isset($_SESSION['Email']) || !isset($_SESSION['RoleID'])) {
                 <input name="ApplicationID" type="hidden" value="<?= $_GET['ApplicationID'] ?>">
             </form>
         </div>
-        <br><br>
     </body>
     <?php include('../html/footer.html');
     ?>

@@ -9,16 +9,10 @@ include "../php/util/backendutil.php";
 
 sessionStart(0, '/', 'localhost', true, true);
 
-if (!isset($_SESSION['Email']) || !isset($_SESSION['RoleID'])) {
+if (!isset($_SESSION['Email']) || !isset($_SESSION['RoleID'])|| $_SESSION['Role'] == 'Applicant') {
     header('Location: ../index.php');
 }
 
-if ($_SESSION['Role'] == 'Applicant') {
-    header('Location: ../index.php');
-}
-// if ($_SESSION['Role'] != 'Registrar') {
-//     header('Location: ../index.php');
-// }
 else {
 ?>
     <!DOCTYPE html>
@@ -89,7 +83,7 @@ else {
 
         createFloatNavbar($NavbarData);
         ?>
-        <div class="c_container" style="margin-left:10px">
+        <div class="c_container" style="margin-left:20px">
             <?php
             if (isset($_GET['application'])) {
                 if ($_GET['application'] == 'nocpassport') {
@@ -244,7 +238,7 @@ function createStudyLeavesection(&$conn)
         $stateStatus[2] = "From Registrar(Initial State)";
         $progressState[3] = $progressStateType['HigherStdToDept']; // HSTD has assigned the application to other departments for approvaln
         $stateStatus[3] = "Assigned To Departments";
-        echo $progressState[3];
+       // echo $progressState[3];
         for ($i = 0; $i < 4; $i++) {
             $applicationData = getStudyLeaveApplicationByProgressState($progressState[$i], $conn);
             if ($applicationData != null) {

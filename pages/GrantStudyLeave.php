@@ -4,31 +4,16 @@ include "../php/db/accessUtility/Users.php";
 include "../php/db/accessUtility/personalInfo.php";
 include "../php/session/session.php";
 include "../php/db/accessUtility/process.php";
+include "../php/util/pageutil.php";
+include "../php/db/accessUtility/studyleaveapplication.php";
 include "../php/db/accessUtility/nocApplication.php";
+include "../php/util/backendutil.php";
 
 sessionStart(0, '/', 'localhost', true, true);
 
 if (!isset($_SESSION['Email']) || !isset($_SESSION['RoleID'])) {
     header('Location: ../index.php');
 } else {
-    // if (isset($_GET['submit']) && $_GET['submit'] == 'Approve') {
-    //     $inputData[$_SESSION['Department']] = 4; // Approved in processstatus;
-    //     // edit needed
-    //     //print_r($_GET);
-    //     echo "<br><br>";
-    //     ///print_r($inputData);
-    //     $NocData = getnocApplicationsByNocID($_GET['NocID'], $conn);
-    //     foreach ($NocData as $key => $value) {
-    //         echo "<br>'$value'<br>";
-    //     }
-    //     $processID = $NocData['ProcessIDref'];
-    //     echo "<br><br>";
-    //     if (updateProcess($processID, $inputData, $conn)) {
-    //         $_SESSION['success'] = 'Approved';
-    //         header('Location: office_home.php');
-    //     }
-    // }
-
 ?>
     <!DOCTYPE html>
     <html lang="en">
@@ -55,6 +40,27 @@ if (!isset($_SESSION['Email']) || !isset($_SESSION['RoleID'])) {
     <body>
         <?php
         include("../html/pageNavbar.php");
+        // print_r($_SESSION);
+        if (isset($_SESSION['error'])) {
+            //echo "<br>"."error"."<br>";
+            popupMessage('error', $_SESSION['error'], 'Ok');
+            unset($_SESSION['error']);
+        }
+        if (isset($_SESSION['success'])) {
+            popupMessage('success', $_SESSION['success'], 'Continue');;
+            unset($_SESSION['success']);
+        }
+        if (isset($_GET['HRsubmission']) && $_GET['HRsubmission'] == 'true') {
+            global $progressStateType;
+            $inputData['ProgressState'] = $progressStateType['Approved'];
+            if (updateStudyLeaveApplicationByApplicationID($_GET['ApplicationID'], $inputData, $conn)) {
+                $_SESSION['success'] = "Successfully sent to Applicant";
+                //print_r($_SESSION);
+                header("Location:office_home.php?application=studyleave");
+            } else {
+                $_SESSION['error'] = "System Error";
+            }
+        }
         // $ApplicantspersonalData = getPersonalInfo($_GET['ApplicantID'], $conn);
         // $ApplicantUserData = getUserByUserID($_GET['ApplicantID'], $conn);
         ?>
@@ -90,15 +96,15 @@ if (!isset($_SESSION['Email']) || !isset($_SESSION['RoleID'])) {
             <hr>
 
             <div style="margin-left:50px">
-            <b>
-                Memo. No.AS-2421/&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;/Ganl. &emsp;&emsp;&emsp; &emsp;&emsp;&emsp; &emsp;&emsp;&emsp; &emsp;&emsp;&emsp; &emsp;&emsp;&emsp; &emsp;&emsp;&emsp; &emsp;&emsp;&emsp; &emsp;&emsp;&emsp; &emsp;&emsp;&emsp; &emsp;&emsp;&emsp; &emsp;&emsp;&emsp; &emsp;&emsp;&emsp; &emsp;&emsp;&emsp;&emsp;&emsp;&emsp;Dated: 04-09-2014
-                <br>
-                <br>Mr. Rudra Pratap Deb Nath
-                <br>Lecturer
-                <br>Department of Computer Science & Engineering
-                <br>Chittagong University
-                <br>Chittagong, Bangladesh.
-            </b>
+                <b>
+                    Memo. No.AS-2421/&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;/Ganl. &emsp;&emsp;&emsp; &emsp;&emsp;&emsp; &emsp;&emsp;&emsp; &emsp;&emsp;&emsp; &emsp;&emsp;&emsp; &emsp;&emsp;&emsp; &emsp;&emsp;&emsp; &emsp;&emsp;&emsp; &emsp;&emsp;&emsp; &emsp;&emsp;&emsp; &emsp;&emsp;&emsp; &emsp;&emsp;&emsp; &emsp;&emsp;&emsp;&emsp;&emsp;&emsp;Dated: 04-09-2014
+                    <br>
+                    <br>Mr. Rudra Pratap Deb Nath
+                    <br>Lecturer
+                    <br>Department of Computer Science & Engineering
+                    <br>Chittagong University
+                    <br>Chittagong, Bangladesh.
+                </b>
             </div>
 
             <div id="notification" style=" text-align:center">
@@ -171,6 +177,27 @@ if (!isset($_SESSION['Email']) || !isset($_SESSION['RoleID'])) {
                 </p>
             </div>
         </div>
+
+        <?php if ($_SESSION['Role'] == "DRHigherStudyBranchRO") { ?>
+            <div class="row" style="padding-bottom: 5vh;">
+                <form action="" method="GET">
+                    <div class="col-md-12">
+                        <div class="mt-2 text-center"><button class="btn btn-primary profile-button" type="submit">Send G.O.</button></div>
+                    </div>
+                    <input name="HRsubmission" type="hidden" value="true">
+                    <input name="ApplicationID" type="hidden" value="<?= $_GET['ApplicationID'] ?>">
+                </form>
+            </div>
+        <?php } else if ($_SESSION['Role'] == "Applicant") { ?>
+            <div class="row" style="padding-bottom: 5vh;">
+                <form action="" method="GET">
+                    <div class="col-md-12">
+                        <div class="mt-2 text-center"><button class="btn btn-primary profile-button" type="submit">Print G.O.</button></div>
+                    </div>
+                    <input name="ApplicationID" type="hidden" value="<?= $_GET['ApplicationID'] ?>">
+                </form>
+            </div>
+        <?php } ?>
 
 
         <br>

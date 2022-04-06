@@ -20,18 +20,25 @@ if (!isset($_SESSION['Email']) || !isset($_SESSION['RoleID']) || $_SESSION['Role
 		<link rel="stylesheet" href="../css/user_home_style.css">
 		<link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.1.0/css/all.css">
 		<link rel="stylesheet" href="../css/log_reg_footer.css">
+		<link rel=" stylesheet" href="../css/Applicant/profile.css">
 		<title>Application Progress</title>
 		<link rel="shortcut icon" type="image/png" sizes="16x16" href="../assets/image/culogolightblue_lite.png">
 	</head>
 
 	<body class="">
-		<div class="c_container" style="min-height: 100vh;">
+		<div class="c_container" style="min-height: 90vh;">
 			<?php
 			include("../html/pageNavbar.php");
 			$Progressstate = null;
 			if (isset($_GET['ApplicationID'])) {
 				$Progressstate = getStudyLeaveApplicationProgressState($_GET['ApplicationID'], $conn); // getProcessProgressByNocID($_POST['NocID'], $conn);
 				$Progressstate = $Progressstate['ProgressState'];
+				if($Progressstate == 14){ // alldeptapproved
+					$Progressstate = 9; // inprogressindept higher study didn't send it to registrar
+				}
+				else if($Progressstate == 4){
+					$Progressstate = 15;
+				}
 			}
 			// print_r($Progressstate);
 			if ($Progressstate == null) {
@@ -80,7 +87,7 @@ if (!isset($_SESSION['Email']) || !isset($_SESSION['RoleID']) || $_SESSION['Role
 							}
 						}
 						printDepartment("Department Chairman, <br />CU", $departmentColor['DepartmentChairman'], "fas fa-user-tie fa-4x", $dept);
-				$dept = 7;
+						$dept = 7;
 						$departmentColor['Registrar'] = "none";
 						if ($Progressstate > 6) {
 							$departmentColor['Registrar'] = $colors['InProgress'];
@@ -89,7 +96,7 @@ if (!isset($_SESSION['Email']) || !isset($_SESSION['RoleID']) || $_SESSION['Role
 							}
 						}
 						printDepartment("Registrar Office, <br />CU", $departmentColor['Registrar'], "fas fa-registered fa-4x", $dept);
-				$dept = 8;
+						$dept = 8;
 						$departmentColor['HigherStudy'] = "none";
 						if ($Progressstate > 7) {
 							$departmentColor['HigherStudy'] = $colors['InProgress'];
@@ -98,7 +105,7 @@ if (!isset($_SESSION['Email']) || !isset($_SESSION['RoleID']) || $_SESSION['Role
 							}
 						}
 						printDepartment("Higher Study Branch, <br />CU", $departmentColor['HigherStudy'], "fa fa-graduation-cap fa-4x", $dept);
-				$dept = 9;
+						$dept = 9;
 						$departmentColor['HigherStdToDept'] = "none";
 						if ($Progressstate > 8) {
 							$departmentColor['HigherStdToDept'] = $colors['InProgress'];
@@ -107,7 +114,7 @@ if (!isset($_SESSION['Email']) || !isset($_SESSION['RoleID']) || $_SESSION['Role
 							}
 						}
 						printDepartment("Assigned To different Department, <br />CU", $departmentColor['HigherStdToDept'], "fas fa-university fa-4x", $dept);
-				$dept = 10;
+						$dept = 10;
 						$departmentColor['Registrar'] = "none";
 						if ($Progressstate > 9) {
 							$departmentColor['Registrar'] = $colors['InProgress'];
@@ -116,7 +123,7 @@ if (!isset($_SESSION['Email']) || !isset($_SESSION['RoleID']) || $_SESSION['Role
 							}
 						}
 						printDepartment("Registrar Office, <br />CU", $departmentColor['Registrar'], "fas fa-registered fa-4x", $dept);
-				$dept = 11;
+						$dept = 11;
 						$departmentColor['ViceChancellor'] = "none";
 						if ($Progressstate > 10) {
 							$departmentColor['ViceChancellor'] = $colors['InProgress'];
@@ -125,7 +132,7 @@ if (!isset($_SESSION['Email']) || !isset($_SESSION['RoleID']) || $_SESSION['Role
 							}
 						}
 						printDepartment("Vice Chancellor Office, <br />CU", $departmentColor['ViceChancellor'], "fas fa-user-alt fa-4x", $dept);
-				$dept = 12;
+						$dept = 12;
 						$departmentColor['Registrar'] = "none";
 						if ($Progressstate > 11) {
 							$departmentColor['Registrar'] = $colors['InProgress'];
@@ -134,7 +141,7 @@ if (!isset($_SESSION['Email']) || !isset($_SESSION['RoleID']) || $_SESSION['Role
 							}
 						}
 						printDepartment("Registrar Office, <br />CU", $departmentColor['Registrar'], "fas fa-registered fa-4x", $dept);
-				$dept = 13;
+						$dept = 13;
 						$departmentColor['HigherStudy'] = "none";
 						if ($Progressstate > 12) {
 							$departmentColor['HigherStudy'] = $colors['InProgress'];
@@ -148,11 +155,18 @@ if (!isset($_SESSION['Email']) || !isset($_SESSION['RoleID']) || $_SESSION['Role
 				</div>
 			<?php } ?>
 		</div>
+		<?php if ($Progressstate > 13) { ?>
+			<div class="row" style="padding-bottom: 5vh;">
+				<form action="FinalApplication.php" method="GET">
+					<div class="col-md-12">
+						<div class="mt-2 text-center"><button class="btn btn-primary profile-button" type="submit">Download G.O.</button></div>
+					</div>
+					<input name="ApplicationID" type="hidden" value="<?= $_GET['ApplicationID'] ?>">
+				</form>
+			</div>
+		<?php } ?>
 	</body>
 	<?php
-	// for ($i = 0; $i < 10; $i++) {
-	// 	echo "<br>";
-	// }
 	include('../html/footer.html');
 	?>
 
