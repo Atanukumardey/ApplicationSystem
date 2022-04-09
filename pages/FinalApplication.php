@@ -180,13 +180,22 @@ if (!isset($_SESSION['Email']) || !isset($_SESSION['RoleID'])) {
             </div>
         </div>
 
-        <div class="row" style="padding-bottom: 5vh;">
-            <form action="GrantStudyLeave.php" method="GET">
-                <div class="col-md-12">
-                    <div class="mt-5 text-center"><button class="btn btn-primary profile-button" type="submit">Make G.O.</button></div>
+        <div class="printbutton row" style="padding-bottom: 5vh;">
+            <div class="col-md-12">
+                <div class="row">
+                    <?php
+                    if ($_SESSION['Role'] == "Applicant") {
+                    ?>
+                        <div class="col mt-5 text-center"><button class="btn btn-primary profile-button" onclick="window.print()">Print Approvalnote</button></div>
+
+                    <?php } ?>
+
+                    <form class="col" action="GrantStudyLeave.php" method="GET">
+                        <div class="col mt-5 text-center"><button class="btn btn-primary profile-button" type="submit">Make G.O.</button></div>
+                        <input name="ApplicationID" type="hidden" value="<?= $_GET['ApplicationID'] ?>">
+                    </form>
                 </div>
-                <input name="ApplicationID" type="hidden" value="<?= $_GET['ApplicationID'] ?>">
-            </form>
+            </div>
         </div>
     </body>
     <?php include('../html/footer.html');
@@ -194,3 +203,14 @@ if (!isset($_SESSION['Email']) || !isset($_SESSION['RoleID'])) {
 
     </html>
 <?php } ?>
+<style>
+    @media print {
+
+        .uppernavbar,
+        .gapafternavbar,
+        .printbutton,
+        .mainfooter {
+            display: none;
+        }
+    }
+</style>

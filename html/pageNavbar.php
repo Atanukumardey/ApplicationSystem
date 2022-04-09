@@ -45,6 +45,6 @@
         </a>
     </div>
 </div>
-<div style="width: 100vw;">
+<div class="gapafternavbar" style="width: 100vw;">
     <hr />
 </div>

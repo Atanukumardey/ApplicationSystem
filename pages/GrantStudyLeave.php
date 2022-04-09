@@ -64,7 +64,7 @@ if (!isset($_SESSION['Email']) || !isset($_SESSION['RoleID'])) {
         // $ApplicantspersonalData = getPersonalInfo($_GET['ApplicantID'], $conn);
         // $ApplicantUserData = getUserByUserID($_GET['ApplicantID'], $conn);
         ?>
-        <div class="container rounded mt-5 mb-2 " style="background-color:  rgb(232, 241, 241);">
+        <div class="container rounded mt-5 mb-2 " style="background-color:  rgb(232, 241, 241);" id="go_application">
             <div class="stdofficenoti" style="display: flex;flex-direction:row;justify-content:space-between;">
                 <div style="padding-top: 20px;display: flex;">
                     <div class="logo">
@@ -189,23 +189,45 @@ if (!isset($_SESSION['Email']) || !isset($_SESSION['RoleID'])) {
                 </form>
             </div>
         <?php } else if ($_SESSION['Role'] == "Applicant") { ?>
-            <div class="row" style="padding-bottom: 5vh;">
-                <form action="" method="GET">
-                    <div class="col-md-12">
-                        <div class="mt-2 text-center"><button class="btn btn-primary profile-button" type="submit">Print G.O.</button></div>
-                    </div>
-                    <input name="ApplicationID" type="hidden" value="<?= $_GET['ApplicationID'] ?>">
-                </form>
+            <div class="printbutton" class="row" style="padding-bottom: 5vh;">
+                <div class="col-md-12">
+                    <div class="mt-2 text-center"><button class="btn btn-primary profile-button" onclick="window.print()">Print G.O.</button></div>
+                </div>
+                <!-- <input name="ApplicationID" type="hidden" value="<?= $_GET['ApplicationID'] ?>"> -->
             </div>
         <?php } ?>
 
 
         <br>
         <br>
+        <?php include('../html/footer.html');
 
+        ?>
     </body>
-    <?php include('../html/footer.html');
-    ?>
 
     </html>
 <?php } ?>
+<style>
+    @media print {
+
+        .uppernavbar,
+        .gapafternavbar,
+        .printbutton,
+        .mainfooter {
+            display: none;
+        }
+    }
+</style>
+
+<script>
+    function printDiv(divName) {
+        var printContents = document.getElementById(divName).innerHTML;
+        var originalContents = document.body.innerHTML;
+
+        document.body.innerHTML = printContents;
+
+        window.print();
+
+        document.body.innerHTML = originalContents;
+    }
+</script>
