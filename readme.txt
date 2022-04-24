@@ -4,4 +4,4 @@ office: ApplicationSystem/office
 registrar: ApplicationSystem/registrar
 verifier: ApplicationSystem/verifier
 
-// https://stackoverflow.com/questions/15965376/how-to-configure-xampp-to-send-mail-from-localhost
+[Project Report](https://github.com/Atanukumardey/ApplicationSystem/Database_Project_Report.pdf)
