@@ -14,8 +14,8 @@ if (!isset($_SESSION['Email']) || !isset($_SESSION['RoleID'])) {
 $validAccesspersons = array("DepartmentChairman", "ViceChancellor", "Registrar", "DRHigherStudyBranchRO");
 
 $trueval = false;
-for($i=0; $i<4; $i++){
-    if($_SESSION['Role'] == $validAccesspersons[$i]){
+for ($i = 0; $i < 4; $i++) {
+    if ($_SESSION['Role'] == $validAccesspersons[$i]) {
         $trueval = true;
         break;
     }
@@ -126,16 +126,17 @@ if ($trueval = false) {
                             <div class="custom-file" id="previousattachments" style="margin-top: 5px;">
                                 <?php
                                 $numofFile = 1;
-                                if($attachmentData!=null){
-                                foreach ($attachmentData as $attachment) { ?>
-                                    <div class='row border-bottom'>
-                                        <div class='col-md-12'>
-                                            <b> <?= $numofFile++ ?>. </b>
-                                            <a href="../php/fileDownload.php?file=<?= $attachment['Directory'] ?>&type=<?= $attachment['Type'] ?>" target="_blank" rel="noopener noreferrer" download="<?= $file ?>"><?= $attachment['Directory'] ?></a>
-                                            <br>
+                                if ($attachmentData != null) {
+                                    foreach ($attachmentData as $attachment) { ?>
+                                        <div class='row border-bottom'>
+                                            <div class='col-md-12'>
+                                                <b> <?= $numofFile++ ?>. </b>
+                                                <a href="../php/fileDownload.php?file=<?= $attachment['Directory'] ?>&type=<?= $attachment['Type'] ?>" target="_blank" rel="noopener noreferrer" download="<?= $file ?>"><?= $attachment['Directory'] ?></a>
+                                                <br>
+                                            </div>
                                         </div>
-                                    </div>
-                                <?php }} ?>
+                                <?php }
+                                } ?>
                             </div>
                             <br>
                             <hr />
@@ -181,7 +182,7 @@ if ($trueval = false) {
                     </div>
                 </div>
             </div>
-            <input name="ApplicationID" type="hidden" value="<?=$applicationID?>"/>
+            <input name="ApplicationID" type="hidden" value="<?= $applicationID ?>" />
         </form>
         <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
 
